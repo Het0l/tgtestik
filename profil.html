@@ -242,7 +242,7 @@
       document.getElementById('error').textContent = "Ошибка: " + err.message;
     }
     const input = document.getElementById('trade-link-input');
-  const status = document.getElementById('trade-link-status');
+    const status = document.getElementById('trade-link-status');
 
   // Load saved value
   const saved = localStorage.getItem('steam_trade_link');
@@ -250,16 +250,17 @@
 
   document.getElementById('save-trade-link').addEventListener('click', () => {
     const val = input.value.trim();
-    if (!val) {
-      status.textContent = "Введите ссылку.";
-      return;
+    const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d{10,}&token=[A-Za-z0-9_-]+$/;
+
+    if (pattern.test(val)) {
+      localStorage.setItem('steam_trade_link', val);
+      input.style.borderColor = 'rgba(255,255,255,0.2)';
+      status.textContent = "Сохранено!";
+    } else {
+      input.style.borderColor = 'red';
+      status.style.color = '#ff6b6b';
+      status.textContent = "Ошибка: Неверная ссылка";
     }
-    if (!val.startsWith('https://steamcommunity.com/tradeoffer/new/')) {
-      status.textContent = "Неверный формат ссылки.";
-      return;
-    }
-    localStorage.setItem('steam_trade_link', val);
-    status.textContent = "Сохранено!";
 });
   </script>
 </body>
