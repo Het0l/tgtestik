@@ -10,17 +10,15 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(to right, #312d3d, #1e3c72);
-    color: white;
+    background: linear-gradient(135deg, #1a1730 0%, #0f1e3a 100%);
+    color: #e0e0ff;
     min-height: 100vh;
-    padding: 20px;
-    padding-bottom: 60px;
     overflow-x: hidden;
     line-height: 1.5;
 }
 
 /* ==========================================================================
-   Layout & Containers
+   Layout
    ========================================================================== */
 
 .container {
@@ -30,18 +28,17 @@ body {
     width: 100%;
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 0 16px;
-    }
-}
-
 /* ==========================================================================
    Header & Navigation
    ========================================================================== */
 
 header {
-    margin-bottom: 32px;
+    padding: 20px 30px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+    z-index: 10;
 }
 
 .header-content {
@@ -52,51 +49,37 @@ header {
     gap: 20px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 .logo h1 {
-    font-size: 2.1rem;
-    font-weight: 600;
-    background: linear-gradient(90deg, #ffffff, #a5d6a7, #81c784);
+    margin: 0;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    font-weight: 700;
+    background: linear-gradient(90deg, #66bb6a, #a5d6a7, #81c784);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    letter-spacing: -0.5px;
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0;
-    padding: 0;
+    letter-spacing: -0.4px;
 }
 
 nav a {
-    color: white;
+    color: #e0e0ff;
     text-decoration: none;
     font-weight: 500;
     font-size: 1.05rem;
     padding: 10px 18px;
     border-radius: 10px;
-    background: rgba(255,255,255,0.08);
-    transition: all 0.22s ease;
-    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.07);
+    transition: all 0.24s ease;
 }
 
-nav a:hover {
-    background: rgba(129,199,132,0.22);
+nav a:hover,
+nav a:focus {
+    background: rgba(102, 187, 106, 0.22);
+    color: white;
     transform: translateY(-1px);
 }
 
 /* ==========================================================================
-   Buttons (общие)
+   Buttons
    ========================================================================== */
 
 .btn,
@@ -107,275 +90,204 @@ nav a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 10px;
+    padding: 14px 28px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    transition: all 0.25s ease;
     text-decoration: none;
+    transition: all 0.26s ease;
 }
 
+.btn-primary,
+.btn-buy,
 .btn-buy-confirm,
-.btn-shop,
-.btn-buy {
+.btn-shop {
     background: linear-gradient(135deg, #4caf50, #66bb6a);
     color: white;
-    box-shadow: 0 4px 14px rgba(76,175,80,0.28);
+    box-shadow: 0 6px 18px rgba(76, 175, 80, 0.32);
 }
 
+.btn-primary:hover,
+.btn-buy:hover,
 .btn-buy-confirm:hover,
-.btn-shop:hover,
-.btn-buy:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(76,175,80,0.42);
+.btn-shop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(76, 175, 80, 0.48);
 }
 
-.btn-register {
-    background: linear-gradient(135deg, #66bb6a, #81c784);
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e0e0ff;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(102, 187, 106, 0.38);
     color: white;
-}
-
-.btn-register:hover {
-    background: linear-gradient(135deg, #4caf50, #66bb6a);
 }
 
 /* ==========================================================================
-   Typography & Sections
+   Typography
    ========================================================================== */
 
-h2, .section-title {
-    font-size: 2.1rem;
-    font-weight: 600;
-    margin-bottom: 24px;
-    text-align: center;
-    background: linear-gradient(90deg, #ffffff, #a5d6a7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.Buy_successful {
-    font-size: 3.2rem;
+h1, h2, h3, .section-title {
     font-weight: 700;
-    text-align: center;
-    margin: 40px 0 60px;
     line-height: 1.2;
-    background: linear-gradient(90deg, #81c784, #ffffff, #a5d6a7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
 }
 
-.hero {
-    text-align: center;
-    padding: 40px 24px;
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(8px);
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 60px;
-}
-
-.hero p {
-    font-size: 1.15rem;
-    color: rgba(255,255,255,0.82);
-    max-width: 720px;
-    margin: 0 auto 32px;
+h2 {
+    font-size: clamp(2rem, 6vw, 2.6rem);
+    margin: 0 0 24px;
+    color: white;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 
 /* ==========================================================================
-   Cards & Grid
+   Cards & Content Blocks
+   ========================================================================== */
+
+.card,
+.skin-card,
+.success-card,
+.hero,
+.trade-link-section,
+#registerForm {
+    background: rgba(20, 25, 45, 0.62);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(102, 187, 106, 0.16);
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+    transition: all 0.3s ease;
+}
+
+.card:hover,
+.skin-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(102, 187, 106, 0.38);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* ==========================================================================
+   Inputs & Forms
+   ========================================================================== */
+
+input,
+textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.22s;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #81c784;
+    box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(224, 224, 255, 0.45);
+}
+
+/* ==========================================================================
+   Grid & Layout Helpers
    ========================================================================== */
 
 .skins-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 28px;
-    margin-bottom: 60px;
 }
 
-.skin-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.09);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: all 0.28s ease;
-    backdrop-filter: blur(4px);
-}
-
-.skin-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 16px 32px rgba(0,0,0,0.35);
-    border-color: rgba(129,199,132,0.38);
-}
-
-.skin-image {
-    height: 200px;
-    background: rgba(0,0,0,0.35);
+.btn-group {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
 }
 
-.skin-info {
-    padding: 20px;
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.skin-name {
-    font-size: 1.35rem;
-    margin-bottom: 8px;
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
 }
 
-.skin-game {
-    color: #a5d6a7;
-    font-size: 0.95rem;
-    margin-bottom: 16px;
-}
+/* ==========================================================================
+   Misc / Helpers
+   ========================================================================== */
 
-.skin-price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 16px;
-}
-
-.price {
-    font-size: 1.35rem;
-    font-weight: 700;
+.highlight {
     color: #81c784;
+    font-weight: 600;
 }
 
-/* ==========================================================================
-   Forms & Inputs
-   ========================================================================== */
-
-.input-box input,
-#tradeLink,
-#trade-link-input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.06);
-    color: white;
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.2s;
+small,
+.text-muted {
+    color: rgba(224, 224, 255, 0.65);
+    font-size: 0.92rem;
 }
 
-.input-box input:focus,
-#tradeLink:focus,
-#trade-link-input:focus {
-    border-color: #81c784;
-    box-shadow: 0 0 0 3px rgba(129,199,132,0.18);
-}
-
-.input-box input::placeholder,
-#tradeLink::placeholder,
-#trade-link-input::placeholder {
-    color: rgba(255,255,255,0.38);
-}
-
-/* ==========================================================================
-   Footer
-   ========================================================================== */
-
-footer {
-    margin-top: 80px;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.footer-column {
-    flex: 1;
-    min-width: 180px;
-}
-
-.footer-column h3 {
-    font-size: 1.25rem;
-    margin-bottom: 20px;
-    color: #a5d6a7;
-}
-
-.footer-column a {
-    color: rgba(255,255,255,0.75);
+a {
+    color: #81c784;
     text-decoration: none;
     transition: color 0.2s;
 }
 
-.footer-column a:hover {
-    color: #81c784;
-}
-
-.copyright {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.5);
-    font-size: 0.9rem;
+a:hover {
+    color: #a5d6a7;
 }
 
 /* ==========================================================================
-   Media Queries
+   Responsive
    ========================================================================== */
 
-@media (max-width: 1024px) {
-    .header-content {
-        justify-content: space-between;
-    }
-    .Buy_successful {
-        font-size: 2.8rem;
-    }
-}
-
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 24px;
-        text-align: center;
+    header {
+        padding: 16px 20px;
     }
 
-    nav ul {
+    .header-content {
         flex-direction: column;
-        gap: 10px;
-        width: 100%;
+        gap: 20px;
+        text-align: center;
     }
 
     nav a {
-        background: rgba(255,255,255,0.06);
+        padding: 12px 20px;
         width: 100%;
         text-align: center;
     }
 
-    .Buy_successful {
-        font-size: 2.4rem;
-    }
-
-    .skins-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    .card,
+    .success-card {
+        padding: 32px 24px;
     }
 }
 
 @media (max-width: 480px) {
-    .logo h1 {
-        font-size: 1.8rem;
-    }
-
     .btn,
-    .btn-buy,
-    .btn-buy-confirm {
+    .btn-primary,
+    .btn-secondary {
         width: 100%;
-        padding: 14px;
+        padding: 16px;
     }
 }
