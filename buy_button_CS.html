@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Market | Безопасная покупка скинов</title>
+    <!-- Подключаем Bootstrap 3.4.1 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content row">
+                <div class="logo col-xs-6">
+                    <h1>Aura Market</h1>
+                </div>
+                <nav class="col-xs-6">
+                    <ul class="nav nav-pills pull-right">
+                        <li class="MainBuy"><a href="index.html">Главная</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container text-center" style="margin-top: 50px;">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <!-- Добавили ID для инпута и обернули в form-group для стиля -->
+                <div class="form-group">
+                    <input type="text" id="tradeLink" class="form-control Buy_successful" placeholder="Введите трейд-ссылку" style="margin-bottom: 15px;" />
+                </div>
+                
+                <!-- Заменили <a> на кнопку с ID, чтобы управлять переходом через JS -->
+                <button id="confirmBtn" class="btn btn-success btn-block btn-buy-confirm">Подтвердить покупку</button>
+                
+                <!-- Место для вывода ошибки -->
+                <p id="errorMessage" style="color: red; margin-top: 10px; display: none;text-align: center;">Не правильная ссылка</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            var input = document.getElementById('tradeLink').value;
+            var errorMsg = document.getElementById('errorMessage');
+            
+            // Регулярное выражение: 
+            // ^https://steamcommunity\.com/tradeoffer/new/  - начало
+            // \?partner=\d{10,}                            - партнер (минимум 10 цифр)
+            // &token=[A-Za-z0-9_-]+                        - токен (буквы и цифры)
+            var pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d{10,}&token=[A-Za-z0-9_-]+$/;
+    
+            if (pattern.test(input)) {
+                errorMsg.style.display = 'none';
+                document.getElementById('tradeLink').style.borderColor = '#ccc';
+                window.location.href = "buy.html";
+            } else {
+                // Уточняем текст ошибки для пользователя
+                errorMsg.textContent = "Error: Неверная ссылка ";
+                errorMsg.style.display = 'block';
+                document.getElementById('tradeLink').style.borderColor = 'red';
+            }
+        });
+    </script>
+    
+    
+
+    <!-- Подключаем jQuery и JS Bootstrap -->
+    <script src="https://ajax.googleapis.com"></script>
+    <script src="https://cdn.jsdelivr.net"></script>
+</body>
+</html>
