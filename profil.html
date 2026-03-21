@@ -7,7 +7,7 @@
   <title>User Info</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacOSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       padding: 20px;
       font-size: 17px;
@@ -18,55 +18,88 @@
       padding-bottom: 50px;
       overflow-x: hidden;
     }
-    h1 {
-      margin-top: 0;
+    h2 {
+      margin: 8px 0 24px 0;
       font-size: 24px;
     }
     .field {
-      margin: 12px 0;
+      margin: 14px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
     }
     .label {
-      font-weight: bold;
-      color: var(--tg-theme-hint-color, #888);
-      display: inline-block;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
       min-width: 110px;
+    }
+    .value {
+      color: white;
     }
     .photo {
       width: 96px;
       height: 96px;
-      border-radius: 48px;
+      border-radius: 50%;
       object-fit: cover;
-      margin: 16px 0;
-      background: #eee;
+      margin: 0 auto 20px;
+      display: block;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
     }
     .not-available {
-      color: #999;
+      color: rgba(255,255,255,0.5);
       font-style: italic;
+      text-align: center;
+      margin: 20px 0;
     }
     #error {
-      color: red;
+      color: #ff6b6b;
       font-weight: bold;
+      margin-top: 20px;
+      text-align: center;
+    }
+    header {
+      margin-bottom: 20px;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.12);
+    }
+    nav a:hover {
+      background: rgba(255,255,255,0.22);
     }
   </style>
 </head>
 <body>
-  <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>Aura Market</h1>
-                </div>
-                
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Назад</a></li>
-                    </ul>
-                </nav>
-                
 
-            </div>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>Aura Market</h1>
         </div>
-    </header> 
+        <nav>
+          <ul>
+            <li><a href="index.html">Назад</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
 
   <h2>Информация о тебе</h2>
 
@@ -74,68 +107,79 @@
 
   <div class="field">
     <span class="label">ID:</span>
-    <span id="user-id">—</span>
+    <span class="value" id="user-id">—</span>
   </div>
 
   <div class="field">
     <span class="label">Имя:</span>
-    <span id="first-name">—</span>
+    <span class="value" id="first-name">—</span>
   </div>
 
-  <div class="field">
-    <span class="label">Фамилия:</span>
-    <span id="last-name">—</span>
-  </div>
+  <!-- Фамилия будет добавлена динамически только если есть -->
 
-  <div class="field">
+  <div class="field" id="username-field">
     <span class="label">Username:</span>
-    <span id="username">—</span>
+    <span class="value" id="username">—</span>
   </div>
 
   <div id="error"></div>
 
   <script>
     const tg = window.Telegram.WebApp;
-    tg.ready();           // обязательно вызвать
-    tg.expand();          // опционально — развернуть на весь экран
+    tg.ready();
+    tg.expand();
 
     try {
       const user = tg.initDataUnsafe?.user;
 
       if (!user || !user.id) {
-        document.getElementById('error').textContent = 
-          "Данные пользователя недоступны. Возможно, Mini App запущен не через бота.";
-        throw new Error("Нет user объекта");
+        document.getElementById('error').textContent =
+          "Данные пользователя недоступны.\nMini App должен быть запущен через бота.";
+        throw new Error("Нет объекта user");
       }
 
-      // Заполняем поля
-      document.getElementById('user-id').textContent     = user.id;
-      document.getElementById('first-name').textContent  = user.first_name || "—";
-      document.getElementById('last-name').textContent   = user.last_name  || "—";
-      document.getElementById('username').textContent    = 
+      // ID и имя — всегда показываем
+      document.getElementById('user-id').textContent = user.id;
+      document.getElementById('first-name').textContent = user.first_name || "—";
+
+      // Username
+      document.getElementById('username').textContent =
         user.username ? `@${user.username}` : "—";
 
-      // Фото, если есть
+      // Фамилия — только если есть и не пустая
+      if (user.last_name && user.last_name.trim() !== "") {
+        const lastNameField = document.createElement('div');
+        lastNameField.className = 'field';
+        lastNameField.innerHTML = `
+          <span class="label">Фамилия:</span>
+          <span class="value">${user.last_name}</span>
+        `;
+        // Вставляем после блока с именем
+        document.getElementById('first-name').parentElement.after(lastNameField);
+      }
+
+      // Фото
       if (user.photo_url) {
         const img = document.createElement('img');
         img.src = user.photo_url;
         img.className = 'photo';
         img.alt = "Аватар";
+        img.onerror = () => {
+          img.src = ''; // или можно поставить заглушку
+          document.getElementById('photo-container').innerHTML =
+            '<div class="not-available">Не удалось загрузить фото</div>';
+        };
         document.getElementById('photo-container').appendChild(img);
       } else {
-        document.getElementById('photo-container').innerHTML = 
+        document.getElementById('photo-container').innerHTML =
           '<div class="not-available">Фото отсутствует</div>';
       }
 
     } catch (err) {
       console.error(err);
-      document.getElementById('error').textContent = 
-        "Ошибка при получении данных: " + err.message;
+      document.getElementById('error').textContent =
+        "Ошибка: " + err.message;
     }
-
-    // Для отладки можешь вывести весь объект
-    // console.log("initDataUnsafe:", tg.initDataUnsafe);
   </script>
-
 </body>
 </html>
