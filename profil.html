@@ -105,6 +105,49 @@
     nav a:hover {
       background: rgba(255,255,255,0.24);
     }
+    .trade-link-section {
+  margin: 24px auto 0;
+  max-width: 360px;
+  text-align: left;
+  }
+  .trade-link-section .info-label {
+    margin-bottom: 8px;
+  }
+  #trade-link-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  #trade-link-input::placeholder {
+    color: rgba(255,255,255,0.35);
+  }
+  #save-trade-link {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  #save-trade-link:hover {
+    background: rgba(255,255,255,0.28);
+  }
+  #trade-link-status {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    min-height: 18px;
+  }
   </style>
 </head>
 <body>
@@ -138,6 +181,12 @@
       <div class="info-label">ID</div>
       <div class="info-value" id="user-id">—</div>
     </div>
+  </div>
+  <div class="trade-link-section">
+    <div class="info-label">Steam Trade Link</div>
+    <input type="url" id="trade-link-input" placeholder="https://steamcommunity.com/tradeoffer/new/..." />
+    <button id="save-trade-link">Сохранить</button>
+    <div id="trade-link-status"></div>
   </div>
 
   <div id="error"></div>
@@ -192,6 +241,26 @@
       console.error(err);
       document.getElementById('error').textContent = "Ошибка: " + err.message;
     }
+    const input = document.getElementById('trade-link-input');
+  const status = document.getElementById('trade-link-status');
+
+  // Load saved value
+  const saved = localStorage.getItem('steam_trade_link');
+  if (saved) input.value = saved;
+
+  document.getElementById('save-trade-link').addEventListener('click', () => {
+    const val = input.value.trim();
+    if (!val) {
+      status.textContent = "Введите ссылку.";
+      return;
+    }
+    if (!val.startsWith('https://steamcommunity.com/tradeoffer/new/')) {
+      status.textContent = "Неверный формат ссылки.";
+      return;
+    }
+    localStorage.setItem('steam_trade_link', val);
+    status.textContent = "Сохранено!";
+});
   </script>
 </body>
 </html>
