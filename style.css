@@ -1,0 +1,627 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #312d3d, #1e3c72);
+    color: white;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ── Container ── */
+.container {
+    max-width: 10000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+/* ── Header ── */
+header {
+    padding: 20px 0;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 40px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* ── Logo ── */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.logo i {
+    font-size: 2.5rem;
+    color: #4a9eff;
+}
+
+.logo h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(to right, #fff, #a3d5ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* ── Nav ── */
+nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+nav a:hover {
+    background: rgba(74, 158, 255, 0.22);
+    color: #ffffff;
+}
+
+/* ── User actions ── */
+.user-actions {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    flex-shrink: 0;
+}
+
+/* ── Buttons ── */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-login {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn-login:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-register {
+    background-color: #4a9eff;
+    color: white;
+}
+
+.btn-register:hover {
+    background-color: #2d8cff;
+}
+
+.btn-buy {
+    background-color: #4a9eff;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-buy:hover {
+    background-color: #2d8cff;
+}
+
+.btn-buy-confirm {
+    background-color: #4a9eff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.btn-buy-confirm:hover {
+    background-color: #2d8cff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74, 158, 255, 0.35);
+}
+
+.btn-shop {
+    background: linear-gradient(to right, #4a9eff, #1e3c72);
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-shop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Buy input ── */
+.Buy_successful {
+    width: 100%;
+    max-width: 600px;
+    padding: 12px 16px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    margin: 10px auto;
+    display: block;
+    text-align: center;
+    transition: border-color 0.25s;
+}
+
+.Buy_successful::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.Buy_successful:focus {
+    border-color: rgba(74, 158, 255, 0.6);
+}
+
+/* ── MainBuy label ── */
+.MainBuy {
+    margin: 30px auto;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    max-width: 800px;
+}
+
+/* ── Hero ── */
+.hero {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 40px 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+.hero h2 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #fff, #a3d5ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+/* ── Skins grid ── */
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.skins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+    margin: auto;
+}
+
+.skin-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.skin-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+    border-color: rgba(74, 158, 255, 0.4);
+}
+
+.skin-image {
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.skin-info {
+    padding: 20px;
+}
+
+.skin-name {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.skin-game {
+    color: #a3d5ff;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.skin-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4a9eff;
+}
+
+/* ── Filter drawer ── */
+.filter-drawer {
+    position: fixed;
+    top: 140px;
+    left: 0;
+    z-index: 999;
+    display: flex;
+}
+
+.filter-tab {
+    width: 42px;
+    height: 90px;
+    background: rgba(74, 158, 255, 0.18);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 4px 0 12px rgba(74, 158, 255, 0.25);
+    border: 1px solid rgba(74, 158, 255, 0.2);
+    border-left: none;
+}
+
+.filter-content {
+    width: 230px;
+    transform: translateX(-100%);
+    transition: transform 0.35s ease;
+    background: rgba(20, 18, 35, 0.92);
+    backdrop-filter: blur(10px);
+    padding: 20px 25px;
+    border-radius: 0 14px 14px 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    height: fit-content;
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 1px solid rgba(74, 158, 255, 0.12);
+    border-left: none;
+}
+
+.filter-drawer:hover .filter-content {
+    transform: translateX(0);
+}
+
+.filter-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ── Register ── */
+.register {
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.register h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#registerForm {
+    width: 350px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.input-box {
+    margin-bottom: 15px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    outline: none;
+    font-size: 15px;
+    transition: border-color 0.25s;
+}
+
+.input-box input:focus {
+    border-color: rgba(74, 158, 255, 0.6);
+}
+
+.register-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4a9eff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.register-btn:hover {
+    background: #2d8cff;
+    transform: translateY(-2px);
+}
+
+/* ── User profile (Telegram) ── */
+.user-profile {
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 24px;
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #4a9eff;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-name {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: white;
+}
+
+.user-username {
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.user-id {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 4px;
+}
+
+/* ── Footer ── */
+footer {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-column h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #a3d5ff;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column li {
+    margin-bottom: 10px;
+}
+
+.footer-column a {
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #4a9eff;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Error message ── */
+#errorMessage {
+    color: #ff6b6b;
+    margin-top: 10px;
+    text-align: center;
+    display: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    nav {
+        order: 3;
+        width: 100%;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 25px;
+        text-align: center;
+    }
+
+    .logo {
+        justify-content: center;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    nav a {
+        display: block;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .user-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .user-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 2.2rem;
+    }
+
+    .MainBuy {
+        font-size: 1.1rem;
+    }
+
+    .filter-drawer {
+        top: auto;
+        bottom: 20px;
+    }
+
+    .filter-tab {
+        border-radius: 0 12px 12px 0;
+        height: 60px;
+    }
+
+    .skins-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+
+    .btn-shop {
+        width: 100%;
+    }
+
+    .skin-price {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-buy {
+        width: 100%;
+    }
+
+    .footer-column {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+}

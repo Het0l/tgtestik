@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>User Info</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      font-size: 17px;
+      line-height: 1.5;
+      background: linear-gradient(to right, #312d3d, #1e3c72);
+      color: white;
+      min-height: 100vh;
+      padding-bottom: 60px;
+      overflow-x: hidden;
+      text-align: center;
+    }
+    h2 {
+      margin: 8px 0 24px 0;
+      font-size: 24px;
+    }
+    .avatar-section {
+      margin: 0 auto 28px;
+      max-width: 200px;
+    }
+    .photo {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .not-available {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin: 0 auto;
+      border: 1px dashed rgba(255,255,255,0.2);
+    }
+    .display-name {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 12px 0 8px;
+      line-height: 1.3;
+      color: white;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+    .info-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 20px 0;
+      font-size: 17px;
+    }
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .info-label {
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .info-value {
+      font-weight: 500;
+      color: white;
+      font-size: 18px;
+    }
+    #error {
+      color: #ff6b6b;
+      font-weight: bold;
+      margin: 24px 0;
+      padding: 0 20px;
+    }
+    header {
+      margin-bottom: 24px;
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.12);
+    }
+    nav a:hover {
+      background: rgba(255,255,255,0.24);
+    }
+    .trade-link-section {
+  margin: 24px auto 0;
+  max-width: 360px;
+  text-align: left;
+  }
+  .trade-link-section .info-label {
+    margin-bottom: 8px;
+  }
+  #trade-link-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  #trade-link-input::placeholder {
+    color: rgba(255,255,255,0.35);
+  }
+  #save-trade-link {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  #save-trade-link:hover {
+    background: rgba(255,255,255,0.28);
+  }
+  #trade-link-status {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    min-height: 18px;
+  }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>Aura Market</h1>
+        </div>
+        <nav>
+          <a href="index.html">Назад</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <h2>Информация о тебе</h2>
+
+  <div class="avatar-section">
+    <div id="photo-container"></div>
+    <div id="display-name" class="display-name"></div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-item">
+      <div class="info-label">Username</div>
+      <div class="info-value" id="username">—</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">ID</div>
+      <div class="info-value" id="user-id">—</div>
+    </div>
+  </div>
+  <div class="trade-link-section">
+    <div class="info-label">Steam Trade Link</div>
+    <input type="url" id="trade-link-input" placeholder="https://steamcommunity.com/tradeoffer/new/..." />
+    <button id="save-trade-link">Сохранить</button>
+    <div id="trade-link-status"></div>
+  </div>
+
+  <div id="error"></div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    try {
+      const user = tg.initDataUnsafe?.user;
+
+      if (!user || !user.id) {
+        document.getElementById('error').textContent =
+          "Данные пользователя недоступны.\nЗапустите через меню бота.";
+        throw new Error("Нет объекта user");
+      }
+
+      // Username и ID
+      document.getElementById('username').textContent =
+        user.username ? `@${user.username}` : "—";
+      document.getElementById('user-id').textContent = user.id;
+
+      // Отображаемое имя под аватаркой
+      let displayName = '';
+      if (user.first_name) {
+        displayName = user.first_name;
+      }
+      if (user.last_name && user.last_name.trim()) {
+        displayName += (displayName ? ' ' : '') + user.last_name;
+      }
+      if (displayName) {
+        document.getElementById('display-name').textContent = displayName;
+      }
+
+      // Фото / заглушка
+      const photoContainer = document.getElementById('photo-container');
+      if (user.photo_url) {
+        const img = document.createElement('img');
+        img.src = user.photo_url;
+        img.className = 'photo';
+        img.alt = "Аватар";
+        img.onerror = () => {
+          photoContainer.innerHTML = '<div class="not-available">Фото недоступно</div>';
+        };
+        photoContainer.appendChild(img);
+      } else {
+        photoContainer.innerHTML = '<div class="not-available">Нет фото</div>';
+      }
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById('error').textContent = "Ошибка: " + err.message;
+    }
+    const input = document.getElementById('trade-link-input');
+    const status = document.getElementById('trade-link-status');
+
+    // Load saved value
+    const saved = localStorage.getItem('steam_trade_link');
+    if (saved) input.value = saved;
+
+    document.getElementById('save-trade-link').addEventListener('click', () => {
+      const val = input.value.trim();
+      const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d+&token=[A-Za-z0-9_-]+$/;
+
+      if (pattern.test(val)) {
+        localStorage.setItem('steam_trade_link', val);
+        input.style.borderColor = 'rgba(255,255,255,0.2)';
+        status.textContent = "Сохранено!";
+      } else {
+        input.style.borderColor = 'red';
+        status.style.color = '#ff6b6b';
+        status.textContent = "Ошибка: Неверная ссылка";
+      }
+  });
+  </script>
+</body>
+</html>
