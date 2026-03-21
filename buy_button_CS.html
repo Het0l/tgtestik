@@ -1,75 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aura Market | Безопасная покупка скинов</title>
-    <!-- Подключаем Bootstrap 3.4.1 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .method-choice { margin: 20px 0; font-size: 16px; }
+        .method-choice label { margin-right: 25px; cursor: pointer; }
+        .hidden { display: none; }
+        #profile-instruction { color: #ddd; font-size: 14px; margin-top: 12px; }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content row">
-                <div class="logo col-xs-6">
-                    <h1>Aura Market</h1>
-                </div>
-                <nav class="col-xs-6">
-                    <ul class="nav nav-pills pull-right">
-                        <li class="MainBuy"><a href="index.html">Главная</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
 
-    <main class="container text-center" style="margin-top: 50px;">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <!-- Добавили ID для инпута и обернули в form-group для стиля -->
-                <div class="form-group">
-                    <input type="text" id="tradeLink" class="form-control Buy_successful" placeholder="Введите трейд-ссылку" style="margin-bottom: 15px;" />
-                </div>
-                
-                <!-- Заменили <a> на кнопку с ID, чтобы управлять переходом через JS -->
-                <button id="confirmBtn" class="btn btn-success btn-block btn-buy-confirm">Подтвердить покупку</button>
-                
-                <!-- Место для вывода ошибки -->
-                <p id="errorMessage" style="color: red; margin-top: 10px; display: none;text-align: center;">Не правильная ссылка</p>
-            </div>
+<header>
+    <div class="container">
+        <div class="header-content row">
+            <div class="logo col-xs-6"><h1>Aura Market</h1></div>
+            <nav class="col-xs-6">
+                <ul class="nav nav-pills pull-right">
+                    <li class="MainBuy"><a href="index.html">Главная</a></li>
+                </ul>
+            </nav>
         </div>
-    </main>
+    </div>
+</header>
 
-    <script>
-        document.getElementById('confirmBtn').addEventListener('click', function() {
-            var input = document.getElementById('tradeLink').value;
-            var errorMsg = document.getElementById('errorMessage');
-            
-            // Регулярное выражение: 
-            // ^https://steamcommunity\.com/tradeoffer/new/  - начало
-            // \?partner=\d{10,}                            - партнер (минимум 10 цифр)
-            // &token=[A-Za-z0-9_-]+                        - токен (буквы и цифры)
-            var pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d{10,}&token=[A-Za-z0-9_-]+$/;
-    
-            if (pattern.test(input)) {
-                errorMsg.style.display = 'none';
-                document.getElementById('tradeLink').style.borderColor = '#ccc';
-                window.location.href = "buy.html";
-            } else {
-                // Уточняем текст ошибки для пользователя
-                errorMsg.textContent = "Error: Неверная ссылка ";
-                errorMsg.style.display = 'block';
+<main class="container text-center" style="margin-top: 50px;">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <h4 style="margin-bottom: 20px;">Как вы хотите указать трейд-ссылку?</h4>
+
+            <div class="method-choice">
+                <label><input type="radio" name="linkMethod" value="manual" checked> Вставить вручную</label>
+                <label><input type="radio" name="linkMethod" value="saved"> Использовать сохранённую</label>
+            </div>
+
+            <!-- Manual input -->
+            <div id="manual-section" class="form-group">
+                <input type="text" id="tradeLink" class="form-control Buy_successful" 
+                       placeholder="https://steamcommunity.com/tradeoffer/new/?partner=..." 
+                       style="margin-bottom: 15px;" />
+            </div>
+
+            <!-- Saved link section -->
+            <div id="saved-section" class="hidden">
+                <p id="saved-link-display" style="word-break: break-all; background: rgba(255,255,255,0.08); padding: 12px; border-radius: 6px;"></p>
+                <p style="color: #aaa; font-size: 13px;">Если ссылка не отображается — сохраните её в профиле → <a href="profil.html" style="color:#4caf50">Перейти в профиль</a></p>
+            </div>
+
+            <button id="confirmBtn" class="btn btn-success btn-block btn-buy-confirm">Подтвердить покупку</button>
+
+            <p id="errorMessage" style="color: red; margin-top: 15px; display: none;">
+                Неверная ссылка. Убедитесь, что она начинается с https://steamcommunity.com/tradeoffer/new/
+            </p>
+
+            <div id="profile-instruction" class="hidden">
+                <p>Чтобы узнать свою трейд-ссылку:</p>
+                <ol style="text-align: left; max-width: 380px; margin: 12px auto; font-size: 14px; line-height: 1.6;">
+                    <li>Зайдите в Steam → Инвентарь</li>
+                    <li>Нажмите «Предложения обмена» (Trade Offers)</li>
+                    <li>Выберите «Кто может присылать мне предложения обмена?»</li>
+                    <li>Внизу в разделе «Сайты сторонних разработчиков» скопируйте ссылку</li>
+                </ol>
+                <a href="https://steamcommunity.com/my/tradeoffers/privacy" target="_blank" style="color: #4caf50;">
+                    Открыть страницу в Steam →
+                </a>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script>
+    const manualRadio   = document.querySelector('input[value="manual"]');
+    const savedRadio    = document.querySelector('input[value="saved"]');
+    const manualSection = document.getElementById('manual-section');
+    const savedSection  = document.getElementById('saved-section');
+    const savedDisplay  = document.getElementById('saved-link-display');
+    const errorMsg      = document.getElementById('errorMessage');
+    const instruction   = document.getElementById('profile-instruction');
+
+    function toggleSections() {
+        if (savedRadio.checked) {
+            manualSection.classList.add('hidden');
+            savedSection.classList.remove('hidden');
+            instruction.classList.add('hidden');
+        } else {
+            manualSection.classList.remove('hidden');
+            savedSection.classList.add('hidden');
+            instruction.classList.remove('hidden');
+        }
+    }
+
+    document.querySelectorAll('input[name="linkMethod"]').forEach(r => {
+        r.addEventListener('change', toggleSections);
+    });
+
+    // Show saved link if exists
+    const savedLink = localStorage.getItem('steam_trade_link');
+    if (savedLink) {
+        savedDisplay.textContent = savedLink;
+    } else {
+        savedDisplay.innerHTML = '<span style="color:#ff9800">Ссылка не сохранена</span>';
+        savedRadio.disabled = true;
+        savedRadio.parentElement.style.opacity = '0.5';
+    }
+
+    // Initial state
+    toggleSections();
+
+    document.getElementById('confirmBtn').addEventListener('click', function() {
+        let link = '';
+
+        if (savedRadio.checked) {
+            link = savedLink;
+        } else {
+            link = document.getElementById('tradeLink').value.trim();
+        }
+
+        errorMsg.style.display = 'none';
+        document.getElementById('tradeLink').style.borderColor = '#ccc';
+
+        if (!link) {
+            errorMsg.textContent = "Введите или выберите трейд-ссылку";
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d{5,}&token=[A-Za-z0-9_-]+$/;
+
+        if (pattern.test(link)) {
+            // Можно передать через URL-параметр, localStorage или sessionStorage
+            localStorage.setItem('purchase_trade_link', link);
+            window.location.href = "buy.html";
+        } else {
+            errorMsg.textContent = "Ошибка: неверный формат ссылки";
+            errorMsg.style.display = 'block';
+            if (!savedRadio.checked) {
                 document.getElementById('tradeLink').style.borderColor = 'red';
             }
-        });
-    </script>
-    
-    
+        }
+    });
+</script>
 
-    <!-- Подключаем jQuery и JS Bootstrap -->
-    <script src="https://ajax.googleapis.com"></script>
-    <script src="https://cdn.jsdelivr.net"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
