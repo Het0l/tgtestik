@@ -250,7 +250,7 @@
 
     document.getElementById('save-trade-link').addEventListener('click', () => {
       const val = input.value.trim();
-      const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d{10,}&token=[A-Za-z0-9_-]+$/;
+      const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d+&token=[A-Za-z0-9_-]+$/;
 
       if (pattern.test(val)) {
         localStorage.setItem('steam_trade_link', val);
