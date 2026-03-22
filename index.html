@@ -6,9 +6,15 @@
     <title>Aura Market</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 
     <style>
+        /* ========== БАЗОВЫЕ ЦВЕТА (как в Counter-Strike.html) ========== */
+        body {
+            background-color: #1a1a2e;
+            color: white;
+        }
+
         header {
             background: rgba(0,0,0,0.45);
             backdrop-filter: blur(10px);
@@ -25,16 +31,16 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
-            height: 50px;          /* фиксированная высота для предсказуемости */
+            height: 50px;
         }
         .logo {
             font-size: 2.3rem;
             font-weight: 800;
-            background: linear-gradient(90deg, #4a9eff, #ffffff);
+            background: linear-gradient(90deg, #00d4ff, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
-            line-height: 1;        /* убираем лишние отступы */
+            line-height: 1;
         }
         .hamburger {
             font-size: 1.9rem;
@@ -55,7 +61,7 @@
             top: 100%;
             right: 15px;
             background: rgba(25, 28, 55, 0.98);
-            border: 1px solid rgba(74,158,255,0.3);
+            border: 1px solid rgba(0,212,255,0.3);
             border-radius: 12px;
             width: 260px;
             padding: 15px 0;
@@ -78,7 +84,7 @@
             font-size: 1.08rem;
         }
         .mobile-menu a:hover {
-            background: rgba(74,158,255,0.25);
+            background: rgba(0,212,255,0.15);
             color: white;
         }
         .mobile-menu hr {
@@ -100,11 +106,142 @@
             font-size: 1rem;
         }
 
-        /* Дополнительно для карточек (чтобы цены выглядели красиво) */
-        .price {
-            font-size: 1.4rem;
+        /* ========== GRID и КАРТОЧКИ ========== */
+        .skins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .skin-card {
+            background: #0f3460;
+            border-radius: 12px;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .skin-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+        .skin-image {
+            font-size: 6rem;
+            padding: 30px 0;
+            background: #1a1a2e;
+        }
+        .skin-info {
+            padding: 15px;
+        }
+        .skin-name {
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #4a9eff;
+            margin-bottom: 6px;
+        }
+        .skin-game {
+            font-size: 0.9rem;
+            color: #aac8e4;
+            margin-bottom: 8px;
+        }
+        .skin-info p {
+            font-size: 0.92rem;
+            color: #c0c8e0;
+            margin-bottom: 12px;
+        }
+        .skin-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .price {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #00d4ff;
+            margin: 0;
+        }
+        .btn-buy {
+            background: #00d4ff;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-buy:hover {
+            background: #00b8d9;
+        }
+        .btn-buy a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ========== КАТЕГОРИИ ========== */
+        .footer-column h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+        }
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-column ul li a {
+            color: #aac8e4;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.2s;
+        }
+        .footer-column ul li a:hover {
+            color: #00d4ff;
+        }
+        .footer-column.categories {
+            background: #0f3460;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* ========== ЗАГОЛОВОК СЕКЦИИ ========== */
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin: 30px 0 20px;
+        }
+        .section-title span {
+            color: #00d4ff;
+        }
+
+        /* ========== ФУТЕР ========== */
+        footer {
+            background: #0a0a1a;
+            border-top: 1px solid rgba(0,212,255,0.15);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        footer h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+        }
+        footer p, footer a {
+            color: #aac8e4;
+            font-size: 0.95rem;
+        }
+        footer a:hover {
+            color: #00d4ff;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -122,8 +259,8 @@
         <div class="mobile-menu">
             <a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> CS 2</a>
             <a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a>
-            <a href="SMI.html"><i class="fas fa-newspaper"></i> Новости</a>
-            <a href="profil.html"><i class="fas fa-user"></i> Перейти в профиль</a>
+            <a href="SMI.html"><i class="fas fa-newspaper"></i> <span data-ru="Новости" data-en="News">Новости</span></a>
+            <a href="profil.html"><i class="fas fa-user"></i> <span data-ru="Перейти в профиль" data-en="Go to profile">Перейти в профиль</span></a>
             <hr>
             <div class="select-group">
                 <select id="currency">
@@ -143,26 +280,28 @@
 <main class="container">
     <section class="featured-skins">
         <h2 class="section-title" data-ru="Популярные предметы" data-en="Popular Items">Популярные предметы</h2>
-       
+
         <div class="skins-grid">
             <!-- Категории -->
-            <div class="footer-column">
+            <div class="skin-card footer-column categories">
                 <h3 data-ru="Категории" data-en="Categories">Категории</h3>
                 <ul>
-                    <li><a href="Counter-Strike.html">Counter-Strike 2</a></li>
-                    <li><a href="Dota.html">Dota 2</a></li>
+                    <li><a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> Counter-Strike 2</a></li>
+                    <li><a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a></li>
                 </ul>
             </div>
 
             <!-- Карточка 1 -->
             <div class="skin-card">
-                <div class="skin-image" style="color: #FFD700;"><i class="fas fa-fist-raised"></i></div>
+                <div class="skin-image" style="color: #FFD700;">
+                    <i class="fas fa-fist-raised"></i>
+                </div>
                 <div class="skin-info">
                     <h3 class="skin-name" data-ru="Prime Counter-Strike" data-en="Prime Counter-Strike">Prime Counter-Strike</h3>
-                    <div class="skin-game">Counter-Strike 2 | Премиум</div>
+                    <div class="skin-game" data-ru="Counter-Strike 2 | Премиум" data-en="Counter-Strike 2 | Premium">Counter-Strike 2 | Премиум</div>
                     <p data-ru="Премиум — для игроков готовых побеждать" data-en="Premium — for players ready to win">Премиум — для игроков готовых побеждать</p>
                     <div class="skin-price">
-                        <div class="price" data-base="111.11">10000</div>
+                        <div class="price" data-base="999.99">$999.99</div>
                         <button class="btn-buy">
                             <a href="buy_button_CS.html" data-ru="Купить" data-en="Buy">Купить</a>
                         </button>
@@ -172,13 +311,15 @@
 
             <!-- Карточка 2 -->
             <div class="skin-card">
-                <div class="skin-image" style="color: #FFA500;"><i class="fas fa-crown"></i></div>
+                <div class="skin-image" style="color: #FFA500;">
+                    <i class="fas fa-crown"></i>
+                </div>
                 <div class="skin-info">
                     <h3 class="skin-name" data-ru="Dota+" data-en="Dota+">Dota+</h3>
-                    <div class="skin-game">Dota 2 | Dota+ Премиум</div>
+                    <div class="skin-game" data-ru="Dota 2 | Dota+ Премиум" data-en="Dota 2 | Dota+ Premium">Dota 2 | Dota+ Премиум</div>
                     <p data-ru="Премиум — для игроков готовых побеждать" data-en="Premium — for players ready to win">Премиум — для игроков готовых побеждать</p>
                     <div class="skin-price">
-                        <div class="price" data-base="111.11">10000</div>
+                        <div class="price" data-base="999.99">$999.99</div>
                         <button class="btn-buy">
                             <a href="buy_button_CS.html" data-ru="Купить" data-en="Buy">Купить</a>
                         </button>
@@ -190,7 +331,7 @@
 </main>
 
 <footer>
-       <div class="container">
+    <div class="container">
         <div class="footer-content row">
             <div class="footer-column col-md-4">
                 <h3>Aura Market</h3>
@@ -199,98 +340,77 @@
                     Лучший маркетплейс для покупки и продажи игровых скинов. Безопасные сделки, низкие комиссии и мгновенная доставка.
                 </p>
             </div>
-                
-                <div class="footer-column col-md-4">
-                    <h3>Поддержка</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="help center.html">Центр помощи</a></li>
-                        <li><a href="#">Связаться с нами</a></li>
-                        <li><a href="#">Политика конфиденциальности</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column col-md-4">
-                    <h3>Социальные сети</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="Net.html"><i class="fab fa-discord"></i> Discord</a></li>
-                        <li><a href="Net.html"><i class="fab fa-telegram"></i> Telegram</a></li>
-                    </ul>
-                </div>
+
+            <div class="footer-column col-md-4">
+                <h3 data-ru="Поддержка" data-en="Support">Поддержка</h3>
+                <ul class="list-unstyled">
+                    <li><a href="help center.html" data-ru="Центр помощи" data-en="Help Center">Центр помощи</a></li>
+                    <li><a href="#" data-ru="Связаться с нами" data-en="Contact Us">Связаться с нами</a></li>
+                    <li><a href="#" data-ru="Политика конфиденциальности" data-en="Privacy Policy">Политика конфиденциальности</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column col-md-4">
+                <h3 data-ru="Социальные сети" data-en="Social Networks">Социальные сети</h3>
+                <ul class="list-unstyled">
+                    <li><a href="Net.html"><i class="fab fa-discord"></i> Discord</a></li>
+                    <li><a href="Net.html"><i class="fab fa-telegram"></i> Telegram</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
 <script>
-// ========== НАСТРОЙКИ ПО УМОЛЧАНИЮ ==========
-const rates = { USD: 1, RUB: 95, EUR: 0.92 };
+const rates = { USD: 1, RUB: 83.13, EUR: 0.864 };
 let currentCurrency = localStorage.getItem('currency') || 'USD';
 let currentLang = localStorage.getItem('language') || 'ru';
 
-// ========== ФУНКЦИИ ==========
 function updatePrices() {
     document.querySelectorAll('.price').forEach(el => {
-        const baseUSD = parseFloat(el.getAttribute('data-base') || 0);
-        const newPrice = (baseUSD * rates[currentCurrency]).toFixed(2);
-        el.textContent = newPrice;
+        const baseUSD = parseFloat(el.getAttribute('data-base')) || 0;
+        const converted = (baseUSD * rates[currentCurrency]).toFixed(2);
+        const symbol = currentCurrency === 'USD' ? '$' : currentCurrency === 'RUB' ? '₽' : '€';
+        el.textContent = symbol + converted;
     });
 }
 
 function switchLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('language', lang);
-
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-ru]').forEach(el => {
-        const key = lang === 'ru' ? 'ru' : 'en';
-        if (el.hasAttribute(`data-${key}`)) {
-            el.textContent = el.getAttribute(`data-${key}`);
-        }
+        const attr = lang === 'ru' ? 'ru' : 'en';
+        if (el.hasAttribute(`data-${attr}`)) el.textContent = el.getAttribute(`data-${attr}`);
     });
-
-    // Кнопки "Купить / Buy"
-    document.querySelectorAll('.btn-buy a').forEach(btn => {
-        btn.textContent = lang === 'ru' ? 'Купить' : 'Buy';
+    document.querySelectorAll('.btn-buy a').forEach(a => {
+        a.textContent = lang === 'ru' ? 'Купить' : 'Buy';
     });
 }
 
-function initSelections() {
-    // Валюта
-    const currencySelect = document.getElementById('currency');
-    if (currencySelect) {
-        currencySelect.value = currentCurrency;
-    }
-
-    // Язык
+function initPage() {
+    const curSelect = document.getElementById('currency');
     const langSelect = document.getElementById('language');
-    if (langSelect) {
-        langSelect.value = currentLang;
-    }
-
-    // Применяем сразу
+    if (curSelect) curSelect.value = currentCurrency;
+    if (langSelect) langSelect.value = currentLang;
     switchLanguage(currentLang);
     updatePrices();
 }
 
-// ========== СОБЫТИЯ ==========
 document.addEventListener('DOMContentLoaded', () => {
-    initSelections();
-
-    document.getElementById('currency')?.addEventListener('change', function() {
-        currentCurrency = this.value;
+    initPage();
+    document.getElementById('currency')?.addEventListener('change', e => {
+        currentCurrency = e.target.value;
         localStorage.setItem('currency', currentCurrency);
         updatePrices();
     });
-
-    document.getElementById('language')?.addEventListener('change', function() {
-        switchLanguage(this.value);
+    document.getElementById('language')?.addEventListener('change', e => {
+        switchLanguage(e.target.value);
     });
 });
 </script>
 
-<!-- jQuery + Bootstrap JS (оставил как было) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
-
-
