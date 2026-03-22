@@ -226,6 +226,71 @@
             justify-content: flex-start;
         }
 
+        /* ========== ПОИСК ========== */
+        .search-bar {
+            max-width: 520px;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px 44px 12px 48px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,212,255,0.3);
+            background: #0f3460;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .search-bar input:focus {
+            border-color: rgba(0,212,255,0.7);
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
+        }
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        .search-bar .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00d4ff;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+        .search-bar .search-clear {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: none;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+        .search-bar .search-clear:hover { color: #00d4ff; }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: #aac8e4;
+            font-size: 1.05rem;
+            grid-column: 1 / -1;
+        }
+        .no-results i {
+            font-size: 2.5rem;
+            color: #00d4ff;
+            display: block;
+            margin-bottom: 12px;
+        }
+
         /* ========== ЗАГОЛОВОК СЕКЦИИ ========== */
         .section-title {
             text-align: center;
@@ -277,15 +342,25 @@
     <section class="featured-skins">
         <h2 class="section-title" data-ru="Популярные предметы" data-en="Popular Items">Популярные предметы</h2>
 
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="search-input" placeholder="Поиск предметов..." autocomplete="off">
+            <button class="search-clear" id="search-clear"><i class="fas fa-times"></i></button>
+        </div>
+
         <div class="skins-grid">
-            <!-- <!-- Категории -->
-            <!-- <div class="skin-card footer-column categories">
+            <div class="no-results" id="no-results">
+                <i class="fas fa-search"></i>
+                <span data-ru="Ничего не найдено" data-en="Nothing found">Ничего не найдено</span>
+            </div>
+            <!-- Категории -->
+            <div class="skin-card footer-column categories">
                 <h3 data-ru="Категории" data-en="Categories">Категории</h3>
                 <ul>
                     <li><a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> Counter-Strike 2</a></li>
                     <li><a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a></li>
                 </ul>
-            </div> --> 
+            </div>
 
             <!-- Карточка 1 -->
             <div class="skin-card">
@@ -382,6 +457,8 @@ function switchLanguage(lang) {
     document.querySelectorAll('.btn-buy a').forEach(a => {
         a.textContent = lang === 'ru' ? 'Купить' : 'Buy';
     });
+    const si = document.getElementById('search-input');
+    if (si) si.placeholder = lang === 'ru' ? 'Поиск предметов...' : 'Search items...';
 }
 
 function initPage() {
@@ -393,8 +470,37 @@ function initPage() {
     updatePrices();
 }
 
+    // ========== ПОИСК ==========
+    const searchInput = document.getElementById('search-input');
+    const searchClear = document.getElementById('search-clear');
+    const noResults   = document.getElementById('no-results');
+
+    function runSearch() {
+        const query = searchInput.value.trim().toLowerCase();
+        const cards = document.querySelectorAll('.skin-card');
+        searchClear.style.display = query ? 'block' : 'none';
+
+        let visible = 0;
+        cards.forEach(card => {
+            const name = (card.querySelector('.skin-name')?.textContent || '').toLowerCase();
+            const match = !query || name.includes(query);
+            card.style.display = match ? '' : 'none';
+            if (match) visible++;
+        });
+
+        noResults.style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', runSearch);
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        runSearch();
+        searchInput.focus();
+    });
+
 document.addEventListener('DOMContentLoaded', () => {
     initPage();
+
     document.getElementById('currency')?.addEventListener('change', e => {
         currentCurrency = e.target.value;
         localStorage.setItem('currency', currentCurrency);
