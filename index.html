@@ -291,7 +291,254 @@
             margin-bottom: 12px;
         }
 
-        /* ========== ФИЛЬТРЫ ========== */
+        /* ========== ИКОНКИ ХЕДЕРА ========== */
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 100%;
+        }
+        .icon-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.12); }
+        .icon-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #00d4ff;
+            color: #000;
+            font-size: 0.6rem;
+            font-weight: 700;
+            border-radius: 999px;
+            min-width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 3px;
+            display: none;
+        }
+
+        /* ========== БОКОВЫЕ ПАНЕЛИ ========== */
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: -380px;
+            width: 360px;
+            max-width: 95vw;
+            height: 100vh;
+            background: #0d1b3e;
+            border-left: 1px solid rgba(0,212,255,0.2);
+            box-shadow: -10px 0 40px rgba(0,0,0,0.6);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.35s cubic-bezier(.4,0,.2,1);
+        }
+        .side-panel.open { right: 0; }
+
+        .panel-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 1999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .panel-overlay.open { opacity: 1; pointer-events: all; }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .panel-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        .panel-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .panel-close:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        .panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        .panel-body::-webkit-scrollbar { width: 4px; }
+        .panel-body::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 4px; }
+
+        .panel-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #aac8e4;
+        }
+        .panel-empty i {
+            font-size: 3rem;
+            color: rgba(0,212,255,0.3);
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        /* Карточка внутри панели */
+        .panel-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #0f3460;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .panel-item-icon {
+            font-size: 2rem;
+            width: 48px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .panel-item-info { flex: 1; min-width: 0; }
+        .panel-item-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .panel-item-game {
+            font-size: 0.8rem;
+            color: #aac8e4;
+            margin-top: 2px;
+        }
+        .panel-item-price {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #00d4ff;
+            white-space: nowrap;
+        }
+        .panel-item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .panel-item-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .btn-remove-item { color: #ff6b6b; }
+        .btn-remove-item:hover { background: rgba(255,107,107,0.15); }
+        .btn-move-item { color: #aac8e4; }
+        .btn-move-item:hover { background: rgba(0,212,255,0.15); color: #00d4ff; }
+
+        /* Корзина — количество */
+        .panel-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .qty-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .qty-btn:hover { background: rgba(0,212,255,0.2); }
+        .qty-val { font-size: 0.9rem; min-width: 16px; text-align: center; }
+
+        /* Футер панели */
+        .panel-footer {
+            padding: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .panel-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: white;
+        }
+        .panel-total span:last-child { color: #00d4ff; }
+        .btn-checkout {
+            width: 100%;
+            padding: 12px;
+            background: #00d4ff;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-checkout:hover { background: #00b8d9; transform: translateY(-1px); }
+
+        /* Кнопки на карточках */
+        .skin-card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .btn-card-action {
+            flex: 1;
+            padding: 7px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: #aac8e4;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn-card-action:hover { background: rgba(0,212,255,0.12); border-color: rgba(0,212,255,0.35); color: #00d4ff; }
+        .btn-card-action.active-fav { color: #ff6b6b; border-color: rgba(255,107,107,0.35); background: rgba(255,107,107,0.08); }
+        .btn-card-action.active-cart { color: #00d4ff; border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.08); }
         .filters-bar {
             display: flex;
             align-items: center;
@@ -389,7 +636,21 @@
     <div class="header-content">
         <a href="index.html"><div class="logo">Aura Market</div></a>
 
-        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <div class="header-icons">
+            <button class="icon-btn" id="btn-open-fav" title="Избранное">
+                <i class="fas fa-heart"></i>
+                <span class="badge" id="fav-badge">0</span>
+            </button>
+            <button class="icon-btn" id="btn-open-cart" title="Корзина">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge" id="cart-badge">0</span>
+            </button>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="hamburger">
+                <i class="fas fa-bars"></i>
+            </label>
+        </div>
         <label for="menu-toggle" class="hamburger">
             <i class="fas fa-bars"></i>
         </label>
@@ -445,10 +706,17 @@
                 <i class="fas fa-search"></i>
                 <span data-ru="Ничего не найдено" data-en="Nothing found">Ничего не найдено</span>
             </div>
-            
+            <!-- Категории -->
+            <div class="skin-card footer-column categories">
+                <h3 data-ru="Категории" data-en="Categories">Категории</h3>
+                <ul>
+                    <li><a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> Counter-Strike 2</a></li>
+                    <li><a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a></li>
+                </ul>
+            </div>
 
             <!-- Карточка 1 -->
-            <div class="skin-card">
+            <div class="skin-card" data-id="cs-prime" data-name="Prime Counter-Strike" data-game="Counter-Strike 2 | Премиум" data-icon="fa-fist-raised" data-icon-color="#FFD700" data-base="999.99">
                 <div class="skin-image" style="color: #FFD700;">
                     <i class="fas fa-fist-raised"></i>
                 </div>
@@ -462,11 +730,15 @@
                             <a href="buy_button_CS.html" data-ru="Купить" data-en="Buy">Купить</a>
                         </button>
                     </div>
+                    <div class="skin-card-actions">
+                        <button class="btn-card-action btn-fav" data-id="cs-prime"><i class="fas fa-heart"></i> <span data-ru="В избранное" data-en="Wishlist">В избранное</span></button>
+                        <button class="btn-card-action btn-cart" data-id="cs-prime"><i class="fas fa-cart-plus"></i> <span data-ru="В корзину" data-en="Add to cart">В корзину</span></button>
+                    </div>
                 </div>
             </div>
 
             <!-- Карточка 2 -->
-            <div class="skin-card">
+            <div class="skin-card" data-id="dota-plus" data-name="Dota+" data-game="Dota 2 | Dota+ Премиум" data-icon="fa-crown" data-icon-color="#FFA500" data-base="999.99">
                 <div class="skin-image" style="color: #FFA500;">
                     <i class="fas fa-crown"></i>
                 </div>
@@ -479,6 +751,10 @@
                         <button class="btn-buy">
                             <a href="buy_button_CS.html" data-ru="Купить" data-en="Buy">Купить</a>
                         </button>
+                    </div>
+                    <div class="skin-card-actions">
+                        <button class="btn-card-action btn-fav" data-id="dota-plus"><i class="fas fa-heart"></i> <span data-ru="В избранное" data-en="Wishlist">В избранное</span></button>
+                        <button class="btn-card-action btn-cart" data-id="dota-plus"><i class="fas fa-cart-plus"></i> <span data-ru="В корзину" data-en="Add to cart">В корзину</span></button>
                     </div>
                 </div>
             </div>
@@ -643,12 +919,258 @@ document.addEventListener('DOMContentLoaded', () => {
         currentCurrency = e.target.value;
         localStorage.setItem('currency', currentCurrency);
         updatePrices();
+        renderCart();
     });
     document.getElementById('language')?.addEventListener('change', e => {
         switchLanguage(e.target.value);
     });
+
+    // ========== КОРЗИНА И ИЗБРАННОЕ ==========
+    let cart = JSON.parse(localStorage.getItem('aura_cart') || '[]');
+    let favs = JSON.parse(localStorage.getItem('aura_favs') || '[]');
+
+    // Данные товаров из карточек
+    function getItemData(id) {
+        const card = document.querySelector(`.skin-card[data-id="${id}"]`);
+        if (!card) return null;
+        return {
+            id,
+            name: card.dataset.name,
+            game: card.dataset.game,
+            icon: card.dataset.icon,
+            iconColor: card.dataset.iconColor,
+            base: parseFloat(card.dataset.base)
+        };
+    }
+
+    function save() {
+        localStorage.setItem('aura_cart', JSON.stringify(cart));
+        localStorage.setItem('aura_favs', JSON.stringify(favs));
+    }
+
+    function formatPrice(baseUSD) {
+        const sym = currentCurrency === 'USD' ? '$' : currentCurrency === 'RUB' ? '₽' : '€';
+        return sym + (baseUSD * rates[currentCurrency]).toFixed(2);
+    }
+
+    // Бейджи
+    function updateBadges() {
+        const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+        const favCount  = favs.length;
+        const cb = document.getElementById('cart-badge');
+        const fb = document.getElementById('fav-badge');
+        cb.textContent = cartCount;
+        cb.style.display = cartCount > 0 ? 'flex' : 'none';
+        fb.textContent = favCount;
+        fb.style.display = favCount > 0 ? 'flex' : 'none';
+    }
+
+    // Рендер избранного
+    function renderFavs() {
+        const body  = document.getElementById('fav-body');
+        const empty = document.getElementById('fav-empty');
+        // Удаляем старые элементы (кроме empty)
+        body.querySelectorAll('.panel-item').forEach(el => el.remove());
+
+        if (favs.length === 0) { empty.style.display = ''; return; }
+        empty.style.display = 'none';
+
+        favs.forEach(item => {
+            const inCart = cart.some(c => c.id === item.id);
+            const el = document.createElement('div');
+            el.className = 'panel-item';
+            el.dataset.id = item.id;
+            el.innerHTML = `
+                <div class="panel-item-icon"><i class="fas ${item.icon}" style="color:${item.iconColor}"></i></div>
+                <div class="panel-item-info">
+                    <div class="panel-item-name">${item.name}</div>
+                    <div class="panel-item-game">${item.game}</div>
+                    <div class="panel-item-price">${formatPrice(item.base)}</div>
+                </div>
+                <div class="panel-item-actions">
+                    <button class="panel-item-actions btn-remove-item" title="Удалить" data-action="rem-fav" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+                    <button class="panel-item-actions btn-move-item" title="${inCart ? 'Уже в корзине' : 'В корзину'}" data-action="fav-to-cart" data-id="${item.id}">
+                        <i class="fas ${inCart ? 'fa-check' : 'fa-cart-plus'}"></i>
+                    </button>
+                </div>`;
+            body.appendChild(el);
+        });
+        updateBadges();
+    }
+
+    // Рендер корзины
+    function renderCart() {
+        const body   = document.getElementById('cart-body');
+        const empty  = document.getElementById('cart-empty');
+        const footer = document.getElementById('cart-footer');
+        body.querySelectorAll('.panel-item').forEach(el => el.remove());
+
+        if (cart.length === 0) {
+            empty.style.display = '';
+            footer.style.display = 'none';
+            return;
+        }
+        empty.style.display = 'none';
+        footer.style.display = '';
+
+        let total = 0;
+        cart.forEach(item => {
+            total += item.base * item.qty;
+            const el = document.createElement('div');
+            el.className = 'panel-item';
+            el.dataset.id = item.id;
+            el.innerHTML = `
+                <div class="panel-item-icon"><i class="fas ${item.icon}" style="color:${item.iconColor}"></i></div>
+                <div class="panel-item-info">
+                    <div class="panel-item-name">${item.name}</div>
+                    <div class="panel-item-game">${item.game}</div>
+                    <div class="panel-item-qty">
+                        <button class="qty-btn" data-action="qty-dec" data-id="${item.id}">−</button>
+                        <span class="qty-val">${item.qty}</span>
+                        <button class="qty-btn" data-action="qty-inc" data-id="${item.id}">+</button>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+                    <div class="panel-item-price">${formatPrice(item.base * item.qty)}</div>
+                    <div class="panel-item-actions">
+                        <button class="btn-remove-item" data-action="rem-cart" data-id="${item.id}" title="Удалить"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>`;
+            body.appendChild(el);
+        });
+
+        document.getElementById('cart-total').textContent = formatPrice(total);
+        updateBadges();
+    }
+
+    // Обновить кнопки на карточках
+    function syncCardButtons() {
+        document.querySelectorAll('.btn-fav').forEach(btn => {
+            const inFav = favs.some(f => f.id === btn.dataset.id);
+            btn.classList.toggle('active-fav', inFav);
+        });
+        document.querySelectorAll('.btn-cart').forEach(btn => {
+            const inCart = cart.some(c => c.id === btn.dataset.id);
+            btn.classList.toggle('active-cart', inCart);
+        });
+    }
+
+    // Открыть/закрыть панели
+    const overlay = document.getElementById('panel-overlay');
+    function openPanel(id) {
+        document.getElementById(id).classList.add('open');
+        overlay.classList.add('open');
+    }
+    function closeAll() {
+        document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('open'));
+        overlay.classList.remove('open');
+    }
+
+    document.getElementById('btn-open-fav').addEventListener('click', () => { renderFavs(); openPanel('panel-fav'); });
+    document.getElementById('btn-open-cart').addEventListener('click', () => { renderCart(); openPanel('panel-cart'); });
+    document.getElementById('close-fav').addEventListener('click', closeAll);
+    document.getElementById('close-cart').addEventListener('click', closeAll);
+    overlay.addEventListener('click', closeAll);
+
+    // Делегирование событий — кнопки на карточках
+    document.addEventListener('click', e => {
+        // Добавить в избранное
+        const favBtn = e.target.closest('.btn-fav');
+        if (favBtn) {
+            const id   = favBtn.dataset.id;
+            const idx  = favs.findIndex(f => f.id === id);
+            if (idx === -1) { const d = getItemData(id); if (d) favs.push(d); }
+            else favs.splice(idx, 1);
+            save(); syncCardButtons(); updateBadges(); return;
+        }
+
+        // Добавить в корзину
+        const cartBtn = e.target.closest('.btn-cart');
+        if (cartBtn) {
+            const id  = cartBtn.dataset.id;
+            const idx = cart.findIndex(c => c.id === id);
+            if (idx === -1) { const d = getItemData(id); if (d) cart.push({...d, qty: 1}); }
+            else cart.splice(idx, 1);
+            save(); syncCardButtons(); updateBadges(); renderCart(); return;
+        }
+
+        // Действия внутри панелей
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        const id     = e.target.closest('[data-action]')?.dataset.id;
+        if (!action) return;
+
+        if (action === 'rem-fav') {
+            favs = favs.filter(f => f.id !== id);
+            save(); syncCardButtons(); renderFavs(); updateBadges();
+        }
+        if (action === 'fav-to-cart') {
+            const inCart = cart.some(c => c.id === id);
+            if (!inCart) { const d = favs.find(f => f.id === id); if (d) cart.push({...d, qty: 1}); }
+            save(); syncCardButtons(); renderFavs(); renderCart(); updateBadges();
+        }
+        if (action === 'rem-cart') {
+            cart = cart.filter(c => c.id !== id);
+            save(); syncCardButtons(); renderCart(); updateBadges();
+        }
+        if (action === 'qty-inc') {
+            const item = cart.find(c => c.id === id);
+            if (item) item.qty++;
+            save(); renderCart();
+        }
+        if (action === 'qty-dec') {
+            const item = cart.find(c => c.id === id);
+            if (item && item.qty > 1) item.qty--;
+            else cart = cart.filter(c => c.id !== id);
+            save(); syncCardButtons(); renderCart(); updateBadges();
+        }
+    });
+
+    // Инициализация
+    syncCardButtons();
+    updateBadges();
 });
 </script>
+
+<!-- OVERLAY -->
+<div class="panel-overlay" id="panel-overlay"></div>
+
+<!-- ПАНЕЛЬ ИЗБРАННОГО -->
+<div class="side-panel" id="panel-fav">
+    <div class="panel-header">
+        <h3><i class="fas fa-heart" style="margin-right:8px;"></i><span data-ru="Избранное" data-en="Wishlist">Избранное</span></h3>
+        <button class="panel-close" id="close-fav"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="panel-body" id="fav-body">
+        <div class="panel-empty" id="fav-empty">
+            <i class="fas fa-heart"></i>
+            <p data-ru="Список избранного пуст" data-en="Your wishlist is empty">Список избранного пуст</p>
+        </div>
+    </div>
+</div>
+
+<!-- ПАНЕЛЬ КОРЗИНЫ -->
+<div class="side-panel" id="panel-cart">
+    <div class="panel-header">
+        <h3><i class="fas fa-shopping-cart" style="margin-right:8px;"></i><span data-ru="Корзина" data-en="Cart">Корзина</span></h3>
+        <button class="panel-close" id="close-cart"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="panel-body" id="cart-body">
+        <div class="panel-empty" id="cart-empty">
+            <i class="fas fa-shopping-cart"></i>
+            <p data-ru="Корзина пуста" data-en="Your cart is empty">Корзина пуста</p>
+        </div>
+    </div>
+    <div class="panel-footer" id="cart-footer" style="display:none;">
+        <div class="panel-total">
+            <span data-ru="Итого:" data-en="Total:">Итого:</span>
+            <span id="cart-total">$0.00</span>
+        </div>
+        <button class="btn-checkout" onclick="window.location.href='buy_button_CS.html'">
+            <i class="fas fa-bolt" style="margin-right:8px;"></i>
+            <span data-ru="Оформить заказ" data-en="Checkout">Оформить заказ</span>
+        </button>
+    </div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
