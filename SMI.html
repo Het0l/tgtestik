@@ -3,90 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSkinStore | Aura Market</title>
-    
-    <!-- Bootstrap 3.4.1 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    <title>Aura Market - Новости</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: white;
+        }
+
+        header {
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            height: 50px;
+            box-sizing: border-box;
+        }
+        .header-content > a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            height: 100%;
+        }
+        .logo {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+        .hamburger {
+            font-size: 1.9rem;
+            color: white;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin-left: 15px;
+        }
+        .hamburger:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        label.hamburger {
+            display: flex !important;
+            align-items: center;
+            margin: 0;
+            line-height: 1;
+            height: 100%;
+        }
+        .menu-toggle { display: none; }
+        .mobile-menu {
+            position: absolute;
+            top: 100%;
+            right: 15px;
+            background: rgba(25, 28, 55, 0.98);
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 12px;
+            width: 260px;
+            padding: 15px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-15px);
+            transition: all 0.35s ease;
+        }
+        .menu-toggle:checked ~ .mobile-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 14px 22px;
+            color: #e0e0ff;
+            text-decoration: none;
+            font-size: 1.08rem;
+        }
+        .mobile-menu a:hover {
+            background: rgba(0,212,255,0.15);
+            color: white;
+        }
+        .mobile-menu hr {
+            border-color: rgba(255,255,255,0.12);
+            margin: 10px 0;
+        }
+        .select-group {
+            padding: 10px 22px;
+            display: flex;
+            gap: 12px;
+        }
+        .select-group select {
+            flex: 1;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 1rem;
+        }
+
+        /* ========== НОВОСТИ ========== */
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin: 30px 0 20px;
+        }
+
+        .news-empty {
+            background: #0f3460;
+            border-radius: 12px;
+            padding: 60px 30px;
+            text-align: center;
+            color: #aac8e4;
+            margin: 20px 0;
+        }
+        .news-empty i {
+            font-size: 4rem;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .news-empty p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .categories-card {
+            background: #0f3460;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .categories-card h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        .categories-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .categories-card ul li a {
+            color: #aac8e4;
+            text-decoration: none;
+            display: block;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+        .categories-card ul li a:hover {
+            color: #00d4ff;
+        }
+        .categories-card ul li a i {
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <div class="header-content row">
-                <!-- Логотип слева -->
-                <div class="logo col-xs-12 col-sm-4">
-                    <h1>Aura Market</h1>
-                </div>
-                
-                <!-- Навигация справа -->
-                <nav class="col-xs-12 col-sm-8 text-right">
-                    <ul>
-                        <li><a href="index.html">Главная</a></li>
-                        <li><a href="shop.html">Магазин</a></li>
-                        <li><a href="popular.html">Популярное</a></li>
-                        <li><a href="SMI.html">Новости</a></li>
-                        <li><a href="profil.html">Профиль</a></li>
-                    </ul>
-                </nav>
+<header>
+    <div class="header-content">
+        <a href="index.html"><div class="logo">Aura Market</div></a>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">
+            <i class="fas fa-bars"></i>
+        </label>
+
+        <div class="mobile-menu">
+            <a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> CS 2</a>
+            <a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a>
+            <a href="profil.html"><i class="fas fa-user"></i> <span data-ru="Перейти в профиль" data-en="Go to profile">Перейти в профиль</span></a>
+            <hr>
+            <div class="select-group">
+                <select id="currency">
+                    <option value="USD">USD $</option>
+                    <option value="RUB">RUB ₽</option>
+                    <option value="EUR">EUR €</option>
+                </select>
+                <select id="language">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <section class="news-section">
-                    <h2 class="section-title">Новых новостей нет</h2>
-                    <p></p>
-                </section>
+<main class="container">
+    <h2 class="section-title" data-ru="Новости" data-en="News">Новости</h2>
+
+    <div class="news-empty">
+        <i class="fas fa-newspaper"></i>
+        <p data-ru="Новых новостей нет" data-en="No new articles">Новых новостей нет</p>
+    </div>
+
+    <div class="categories-card">
+        <h3 data-ru="Категории" data-en="Categories">Категории</h3>
+        <ul>
+            <li><a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> Counter-Strike 2</a></li>
+            <li><a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a></li>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-content row">
+            <div class="footer-column col-md-4">
+                <h3>Aura Market</h3>
+                <p data-ru="Лучший маркетплейс для покупки и продажи игровых скинов. Безопасные сделки, низкие комиссии и мгновенная доставка."
+                   data-en="The best marketplace for buying and selling game skins. Secure deals, low fees and instant delivery.">
+                    Лучший маркетплейс для покупки и продажи игровых скинов. Безопасные сделки, низкие комиссии и мгновенная доставка.
+                </p>
+            </div>
+
+            <div class="footer-column col-md-4">
+                <h3 data-ru="Поддержка" data-en="Support">Поддержка</h3>
+                <ul class="list-unstyled">
+                    <li><a href="help center.html" data-ru="Центр помощи" data-en="Help Center">Центр помощи</a></li>
+                    <li><a href="#" data-ru="Связаться с нами" data-en="Contact Us">Связаться с нами</a></li>
+                    <li><a href="#" data-ru="Политика конфиденциальности" data-en="Privacy Policy">Политика конфиденциальности</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column col-md-4">
+                <h3 data-ru="Социальные сети" data-en="Social Networks">Социальные сети</h3>
+                <ul class="list-unstyled">
+                    <li><a href="Net.html"><i class="fab fa-discord"></i> Discord</a></li>
+                    <li><a href="Net.html"><i class="fab fa-telegram"></i> Telegram</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+</footer>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="footer-column">
-                    <h3>Категории</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="Counter-Strike.html">Counter-Strike 2</a></li>
-                        <li><a href="Dota.html">Dota 2</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </main>
+<script>
+const rates = { USD: 1, RUB: 83.13, EUR: 0.864 };
+let currentCurrency = localStorage.getItem('currency') || 'USD';
+let currentLang = localStorage.getItem('language') || 'ru';
 
-    <footer>
-        <div class="container">
-            <div class="footer-content row">
-                <div class="footer-column col-md-4 col-sm-6">
-                    <h3>Aura Market</h3>
-                    <p>Лучший маркетплейс для покупки и продажи игровых скинов. Безопасные сделки, низкие комиссии и мгновенная доставка.</p>
-                </div>
-                
-                <div class="footer-column col-md-4 col-sm-3">
-                    <h3>Поддержка</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="help center.html">Центр помощи</a></li>
-                        <li><a href="#">Связаться с нами</a></li>
-                        <li><a href="#">Политика конфиденциальности</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column col-md-4 col-sm-3">
-                    <h3>Социальные сети</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="Net.html"><i class="fab fa-discord"></i> Discord</a></li>
-                        <li><a href="Net.html"><i class="fab fa-telegram"></i> Telegram</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-ru]').forEach(el => {
+        const attr = lang === 'ru' ? 'ru' : 'en';
+        if (el.hasAttribute(`data-${attr}`)) el.textContent = el.getAttribute(`data-${attr}`);
+    });
+}
 
-    <!-- Скрипты в конце для скорости -->
-    <script src="https://ajax.googleapis.com"></script>
-    <script src="https://cdn.jsdelivr.net"></script>
+function initPage() {
+    const curSelect = document.getElementById('currency');
+    const langSelect = document.getElementById('language');
+    if (curSelect) curSelect.value = currentCurrency;
+    if (langSelect) langSelect.value = currentLang;
+    switchLanguage(currentLang);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initPage();
+    document.getElementById('currency')?.addEventListener('change', e => {
+        currentCurrency = e.target.value;
+        localStorage.setItem('currency', currentCurrency);
+    });
+    document.getElementById('language')?.addEventListener('change', e => {
+        switchLanguage(e.target.value);
+    });
+});
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
