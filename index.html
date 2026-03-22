@@ -291,6 +291,83 @@
             margin-bottom: 12px;
         }
 
+        /* ========== ФИЛЬТРЫ ========== */
+        .filters-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .filter-label {
+            font-size: 0.88rem;
+            color: #aac8e4;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .price-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .price-inputs input {
+            width: 100px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,212,255,0.25);
+            background: #0f3460;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .price-inputs input:focus {
+            border-color: rgba(0,212,255,0.6);
+        }
+        .price-inputs input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        .price-inputs .separator {
+            color: #aac8e4;
+            font-size: 0.9rem;
+        }
+        .filter-sort {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,212,255,0.25);
+            background: #0f3460;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .filter-sort:focus {
+            border-color: rgba(0,212,255,0.6);
+        }
+        .btn-reset-filters {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: transparent;
+            color: #aac8e4;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: none;
+        }
+        .btn-reset-filters:hover {
+            border-color: rgba(0,212,255,0.4);
+            color: #00d4ff;
+        }
+        .btn-reset-filters.visible {
+            display: inline-block;
+        }
+
         /* ========== ЗАГОЛОВОК СЕКЦИИ ========== */
         .section-title {
             text-align: center;
@@ -348,10 +425,33 @@
             <button class="search-clear" id="search-clear"><i class="fas fa-times"></i></button>
         </div>
 
+        <div class="filters-bar">
+            <span class="filter-label" data-ru="Цена:" data-en="Price:">Цена:</span>
+            <div class="price-inputs">
+                <input type="number" id="price-min" placeholder="от" min="0">
+                <span class="separator">—</span>
+                <input type="number" id="price-max" placeholder="до" min="0">
+            </div>
+            <select class="filter-sort" id="sort-select">
+                <option value="" data-ru="Сортировка" data-en="Sort by">Сортировка</option>
+                <option value="asc" data-ru="Дешевле" data-en="Price: Low to High">Дешевле</option>
+                <option value="desc" data-ru="Дороже" data-en="Price: High to Low">Дороже</option>
+            </select>
+            <button class="btn-reset-filters" id="reset-filters" data-ru="Сбросить" data-en="Reset">Сбросить</button>
+        </div>
+
         <div class="skins-grid">
             <div class="no-results" id="no-results">
                 <i class="fas fa-search"></i>
                 <span data-ru="Ничего не найдено" data-en="Nothing found">Ничего не найдено</span>
+            </div>
+            <!-- Категории -->
+            <div class="skin-card footer-column categories">
+                <h3 data-ru="Категории" data-en="Categories">Категории</h3>
+                <ul>
+                    <li><a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> Counter-Strike 2</a></li>
+                    <li><a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a></li>
+                </ul>
             </div>
 
             <!-- Карточка 1 -->
@@ -451,6 +551,10 @@ function switchLanguage(lang) {
     });
     const si = document.getElementById('search-input');
     if (si) si.placeholder = lang === 'ru' ? 'Поиск предметов...' : 'Search items...';
+    const pmin = document.getElementById('price-min');
+    const pmax = document.getElementById('price-max');
+    if (pmin) pmin.placeholder = lang === 'ru' ? 'от' : 'min';
+    if (pmax) pmax.placeholder = lang === 'ru' ? 'до' : 'max';
 }
 
 function initPage() {
@@ -462,32 +566,81 @@ function initPage() {
     updatePrices();
 }
 
-    // ========== ПОИСК ==========
-    const searchInput = document.getElementById('search-input');
-    const searchClear = document.getElementById('search-clear');
-    const noResults   = document.getElementById('no-results');
+    // ========== ПОИСК И ФИЛЬТРЫ ==========
+    const searchInput   = document.getElementById('search-input');
+    const searchClear   = document.getElementById('search-clear');
+    const noResults     = document.getElementById('no-results');
+    const priceMin      = document.getElementById('price-min');
+    const priceMax      = document.getElementById('price-max');
+    const sortSelect    = document.getElementById('sort-select');
+    const resetBtn      = document.getElementById('reset-filters');
+    const grid          = document.querySelector('.skins-grid');
 
-    function runSearch() {
-        const query = searchInput.value.trim().toLowerCase();
-        const cards = document.querySelectorAll('.skin-card');
-        searchClear.style.display = query ? 'block' : 'none';
+    function getCardPriceUSD(card) {
+        const priceEl = card.querySelector('.price');
+        return priceEl ? parseFloat(priceEl.getAttribute('data-base')) || 0 : 0;
+    }
 
+    function checkFiltersActive() {
+        const active = searchInput.value.trim() || priceMin.value || priceMax.value || sortSelect.value;
+        resetBtn.classList.toggle('visible', !!active);
+        searchClear.style.display = searchInput.value.trim() ? 'block' : 'none';
+    }
+
+    function applyFilters() {
+        const query   = searchInput.value.trim().toLowerCase();
+        const minUSD  = priceMin.value !== '' ? parseFloat(priceMin.value) / rates[currentCurrency] : null;
+        const maxUSD  = priceMax.value !== '' ? parseFloat(priceMax.value) / rates[currentCurrency] : null;
+        const sort    = sortSelect.value;
+
+        const cards = Array.from(document.querySelectorAll('.skin-card'));
+
+        // Фильтрация
         let visible = 0;
         cards.forEach(card => {
-            const name = (card.querySelector('.skin-name')?.textContent || '').toLowerCase();
-            const match = !query || name.includes(query);
+            const name    = (card.querySelector('.skin-name')?.textContent || '').toLowerCase();
+            const priceV  = getCardPriceUSD(card);
+            const nameOk  = !query || name.includes(query);
+            const minOk   = minUSD === null || priceV >= minUSD;
+            const maxOk   = maxUSD === null || priceV <= maxUSD;
+            const match   = nameOk && minOk && maxOk;
             card.style.display = match ? '' : 'none';
             if (match) visible++;
         });
 
         noResults.style.display = visible === 0 ? 'block' : 'none';
+
+        // Сортировка видимых карточек
+        if (sort) {
+            const visibleCards = cards.filter(c => c.style.display !== 'none');
+            visibleCards.sort((a, b) => {
+                const pa = getCardPriceUSD(a);
+                const pb = getCardPriceUSD(b);
+                return sort === 'asc' ? pa - pb : pb - pa;
+            });
+            visibleCards.forEach(card => grid.appendChild(card));
+        }
+
+        checkFiltersActive();
     }
 
-    searchInput.addEventListener('input', runSearch);
+    searchInput.addEventListener('input', applyFilters);
+    priceMin.addEventListener('input', applyFilters);
+    priceMax.addEventListener('input', applyFilters);
+    sortSelect.addEventListener('change', applyFilters);
+
     searchClear.addEventListener('click', () => {
         searchInput.value = '';
-        runSearch();
+        applyFilters();
         searchInput.focus();
+    });
+
+    resetBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        priceMin.value = '';
+        priceMax.value = '';
+        sortSelect.value = '';
+        applyFilters();
     });
 
 document.addEventListener('DOMContentLoaded', () => {
