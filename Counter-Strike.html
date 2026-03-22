@@ -9,24 +9,34 @@
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>Aura Market</h1>
-                </div>
-                
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Главная</a></li>
-                        <li><a href="shop.html">Магазин</a></li>
-                        <li><a href="popular.html">Популярное</a></li>
-                        <li><a href="SMI.html">Новости</a></li>
-                        <li><a href="profil.html">Профиль</a></li>
-                    </ul>
-                </nav>
+    <div class="header-content">
+        <div class="logo">Aura</div>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">
+            <i class="fas fa-bars"></i>
+        </label>
+
+        <div class="mobile-menu">
+            <a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> CS 2</a>
+            <a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a>
+            <a href="SMI.html"><i class="fas fa-newspaper"></i> Новости</a>
+            <a href="profil.html"><i class="fas fa-user"></i> Перейти в профиль</a>
+            <hr>
+            <div class="select-group">
+                <select id="currency">
+                    <option value="USD">USD $</option>
+                    <option value="RUB">RUB ₽</option>
+                    <option value="EUR">EUR €</option>
+                </select>
+                <select id="language">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
             </div>
         </div>
-    </header>
+    </div>
+</header>
     <script src="user.js"></script> 
     <main class="container">
         <section class="featured-skins">
@@ -85,6 +95,71 @@
             </div>
         </div>
     </footer>
+<script>
+// ========== НАСТРОЙКИ ПО УМОЛЧАНИЮ ==========
+const rates = { USD: 1, RUB: 95, EUR: 0.92 };
+let currentCurrency = localStorage.getItem('currency') || 'USD';
+let currentLang = localStorage.getItem('language') || 'ru';
 
+// ========== ФУНКЦИИ ==========
+function updatePrices() {
+    document.querySelectorAll('.price').forEach(el => {
+        const baseUSD = parseFloat(el.getAttribute('data-base') || 0);
+        const newPrice = (baseUSD * rates[currentCurrency]).toFixed(2);
+        el.textContent = newPrice;
+    });
+}
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('language', lang);
+
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-ru]').forEach(el => {
+        const key = lang === 'ru' ? 'ru' : 'en';
+        if (el.hasAttribute(`data-${key}`)) {
+            el.textContent = el.getAttribute(`data-${key}`);
+        }
+    });
+
+    // Кнопки "Купить / Buy"
+    document.querySelectorAll('.btn-buy a').forEach(btn => {
+        btn.textContent = lang === 'ru' ? 'Купить' : 'Buy';
+    });
+}
+
+function initSelections() {
+    // Валюта
+    const currencySelect = document.getElementById('currency');
+    if (currencySelect) {
+        currencySelect.value = currentCurrency;
+    }
+
+    // Язык
+    const langSelect = document.getElementById('language');
+    if (langSelect) {
+        langSelect.value = currentLang;
+    }
+
+    // Применяем сразу
+    switchLanguage(currentLang);
+    updatePrices();
+}
+
+// ========== СОБЫТИЯ ==========
+document.addEventListener('DOMContentLoaded', () => {
+    initSelections();
+
+    document.getElementById('currency')?.addEventListener('change', function() {
+        currentCurrency = this.value;
+        localStorage.setItem('currency', currentCurrency);
+        updatePrices();
+    });
+
+    document.getElementById('language')?.addEventListener('change', function() {
+        switchLanguage(this.value);
+    });
+});
+</script>
 </body>
 </html>
