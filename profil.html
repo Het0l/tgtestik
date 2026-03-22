@@ -1,267 +1,434 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <title>User Info</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 20px;
-      font-size: 17px;
-      line-height: 1.5;
-      background: linear-gradient(to right, #312d3d, #1e3c72);
-      color: white;
-      min-height: 100vh;
-      padding-bottom: 60px;
-      overflow-x: hidden;
-      text-align: center;
-    }
-    h2 {
-      margin: 8px 0 24px 0;
-      font-size: 24px;
-    }
-    .avatar-section {
-      margin: 0 auto 28px;
-      max-width: 200px;
-    }
-    .photo {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.25);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .not-available {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      color: rgba(255,255,255,0.4);
-      margin: 0 auto;
-      border: 1px dashed rgba(255,255,255,0.2);
-    }
-    .display-name {
-      font-size: 22px;
-      font-weight: 600;
-      margin: 12px 0 8px;
-      line-height: 1.3;
-      color: white;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-    }
-    .info-row {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin: 20px 0;
-      font-size: 17px;
-    }
-    .info-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .info-label {
-      font-weight: 500;
-      color: rgba(255,255,255,0.75);
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-    .info-value {
-      font-weight: 500;
-      color: white;
-      font-size: 18px;
-    }
-    #error {
-      color: #ff6b6b;
-      font-weight: bold;
-      margin: 24px 0;
-      padding: 0 20px;
-    }
-    header {
-      margin-bottom: 24px;
-    }
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      padding: 8px 14px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.12);
-    }
-    nav a:hover {
-      background: rgba(255,255,255,0.24);
-    }
-    .trade-link-section {
-  margin: 24px auto 0;
-  max-width: 360px;
-  text-align: left;
-  }
-  .trade-link-section .info-label {
-    margin-bottom: 8px;
-  }
-  #trade-link-input {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.08);
-    color: white;
-    font-size: 14px;
-    box-sizing: border-box;
-    outline: none;
-  }
-  #trade-link-input::placeholder {
-    color: rgba(255,255,255,0.35);
-  }
-  #save-trade-link {
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.18);
-    color: white;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  #save-trade-link:hover {
-    background: rgba(255,255,255,0.28);
-  }
-  #trade-link-status {
-    margin-top: 8px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    min-height: 18px;
-  }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Aura Market - Профиль</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #1a1a2e;
+            color: white;
+            min-height: 100vh;
+            padding-bottom: 60px;
+            overflow-x: hidden;
+        }
+
+        /* ========== ХЕДЕР ========== */
+        header {
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            height: 50px;
+            box-sizing: border-box;
+        }
+        .header-content > a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            height: 100%;
+        }
+        .logo {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+        .hamburger {
+            font-size: 1.9rem;
+            color: white;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin-left: 15px;
+        }
+        .hamburger:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        label.hamburger {
+            display: flex !important;
+            align-items: center;
+            margin: 0;
+            line-height: 1;
+            height: 100%;
+        }
+        .menu-toggle { display: none; }
+        .mobile-menu {
+            position: absolute;
+            top: 100%;
+            right: 15px;
+            background: rgba(25, 28, 55, 0.98);
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 12px;
+            width: 260px;
+            padding: 15px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-15px);
+            transition: all 0.35s ease;
+        }
+        .menu-toggle:checked ~ .mobile-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 14px 22px;
+            color: #e0e0ff;
+            text-decoration: none;
+            font-size: 1.08rem;
+        }
+        .mobile-menu a:hover {
+            background: rgba(0,212,255,0.15);
+            color: white;
+        }
+        .mobile-menu hr {
+            border-color: rgba(255,255,255,0.12);
+            margin: 10px 0;
+        }
+        .select-group {
+            padding: 10px 22px;
+            display: flex;
+            gap: 12px;
+        }
+        .select-group select {
+            flex: 1;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 1rem;
+        }
+
+        /* ========== ПРОФИЛЬ ========== */
+        .profile-wrapper {
+            max-width: 480px;
+            margin: 40px auto 0;
+            padding: 0 15px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .avatar-card {
+            background: #0f3460;
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+        }
+
+        .photo {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(0,212,255,0.5);
+            box-shadow: 0 4px 20px rgba(0,212,255,0.2);
+        }
+        .not-available {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin: 0 auto;
+            border: 1px dashed rgba(0,212,255,0.3);
+        }
+        .display-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 16px 0 0;
+            color: white;
+        }
+
+        .info-card {
+            background: #0f3460;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .info-label {
+            font-size: 0.85rem;
+            color: #aac8e4;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .trade-card {
+            background: #0f3460;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .trade-card .info-label {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        #trade-link-input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+            color: white;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        #trade-link-input:focus {
+            border-color: rgba(0,212,255,0.5);
+        }
+        #trade-link-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        #save-trade-link {
+            margin-top: 12px;
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            border: none;
+            background: #00d4ff;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #save-trade-link:hover {
+            background: #00b8d9;
+        }
+        #trade-link-status {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            min-height: 18px;
+        }
+
+        #error {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin: 20px 0;
+            background: rgba(255,107,107,0.1);
+            border-radius: 10px;
+            padding: 14px;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">
-          <h1>Aura Market</h1>
+<header>
+    <div class="header-content">
+        <a href="index.html"><div class="logo">Aura Market</div></a>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">
+            <i class="fas fa-bars"></i>
+        </label>
+
+        <div class="mobile-menu">
+            <a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> CS 2</a>
+            <a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a>
+            <a href="SMI.html"><i class="fas fa-newspaper"></i> <span data-ru="Новости" data-en="News">Новости</span></a>
+            <hr>
+            <div class="select-group">
+                <select id="currency">
+                    <option value="USD">USD $</option>
+                    <option value="RUB">RUB ₽</option>
+                    <option value="EUR">EUR €</option>
+                </select>
+                <select id="language">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
         </div>
-        <nav>
-          <a href="index.html">Назад</a>
-        </nav>
-      </div>
     </div>
-  </header>
+</header>
 
-  <h2>Информация о тебе</h2>
+<div class="profile-wrapper">
+    <h2 class="section-title" data-ru="Информация о тебе" data-en="Your Info">Информация о тебе</h2>
 
-  <div class="avatar-section">
-    <div id="photo-container"></div>
-    <div id="display-name" class="display-name"></div>
-  </div>
-
-  <div class="info-row">
-    <div class="info-item">
-      <div class="info-label">Username</div>
-      <div class="info-value" id="username">—</div>
+    <div class="avatar-card">
+        <div id="photo-container"></div>
+        <div id="display-name" class="display-name"></div>
     </div>
-    <div class="info-item">
-      <div class="info-label">ID</div>
-      <div class="info-value" id="user-id">—</div>
+
+    <div class="info-card">
+        <div class="info-item">
+            <div class="info-label">Username</div>
+            <div class="info-value" id="username">—</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">ID</div>
+            <div class="info-value" id="user-id">—</div>
+        </div>
     </div>
-  </div>
-  <div class="trade-link-section">
-    <div class="info-label">Steam Trade Link</div>
-    <input type="url" id="trade-link-input" placeholder="https://steamcommunity.com/tradeoffer/new/..." />
-    <button id="save-trade-link">Сохранить</button>
-    <div id="trade-link-status"></div>
-  </div>
 
-  <div id="error"></div>
+    <div class="trade-card">
+        <div class="info-label" data-ru="Steam Trade Link" data-en="Steam Trade Link">Steam Trade Link</div>
+        <input type="url" id="trade-link-input" placeholder="https://steamcommunity.com/tradeoffer/new/..." />
+        <button id="save-trade-link" data-ru="Сохранить" data-en="Save">Сохранить</button>
+        <div id="trade-link-status"></div>
+    </div>
 
-  <script>
+    <div id="error"></div>
+</div>
+
+<script>
+    // ========== TELEGRAM ==========
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
 
     try {
-      const user = tg.initDataUnsafe?.user;
+        const user = tg.initDataUnsafe?.user;
 
-      if (!user || !user.id) {
-        document.getElementById('error').textContent =
-          "Данные пользователя недоступны.\nЗапустите через меню бота.";
-        throw new Error("Нет объекта user");
-      }
+        if (!user || !user.id) {
+            document.getElementById('error').textContent =
+                "Данные пользователя недоступны.\nЗапустите через меню бота.";
+            throw new Error("Нет объекта user");
+        }
 
-      // Username и ID
-      document.getElementById('username').textContent =
-        user.username ? `@${user.username}` : "—";
-      document.getElementById('user-id').textContent = user.id;
+        document.getElementById('username').textContent =
+            user.username ? `@${user.username}` : "—";
+        document.getElementById('user-id').textContent = user.id;
 
-      // Отображаемое имя под аватаркой
-      let displayName = '';
-      if (user.first_name) {
-        displayName = user.first_name;
-      }
-      if (user.last_name && user.last_name.trim()) {
-        displayName += (displayName ? ' ' : '') + user.last_name;
-      }
-      if (displayName) {
-        document.getElementById('display-name').textContent = displayName;
-      }
+        let displayName = '';
+        if (user.first_name) displayName = user.first_name;
+        if (user.last_name && user.last_name.trim())
+            displayName += (displayName ? ' ' : '') + user.last_name;
+        if (displayName)
+            document.getElementById('display-name').textContent = displayName;
 
-      // Фото / заглушка
-      const photoContainer = document.getElementById('photo-container');
-      if (user.photo_url) {
-        const img = document.createElement('img');
-        img.src = user.photo_url;
-        img.className = 'photo';
-        img.alt = "Аватар";
-        img.onerror = () => {
-          photoContainer.innerHTML = '<div class="not-available">Фото недоступно</div>';
-        };
-        photoContainer.appendChild(img);
-      } else {
-        photoContainer.innerHTML = '<div class="not-available">Нет фото</div>';
-      }
+        const photoContainer = document.getElementById('photo-container');
+        if (user.photo_url) {
+            const img = document.createElement('img');
+            img.src = user.photo_url;
+            img.className = 'photo';
+            img.alt = "Аватар";
+            img.onerror = () => {
+                photoContainer.innerHTML = '<div class="not-available">Фото недоступно</div>';
+            };
+            photoContainer.appendChild(img);
+        } else {
+            photoContainer.innerHTML = '<div class="not-available">Нет фото</div>';
+        }
 
     } catch (err) {
-      console.error(err);
-      document.getElementById('error').textContent = "Ошибка: " + err.message;
+        console.error(err);
+        document.getElementById('error').textContent = "Ошибка: " + err.message;
     }
+
+    // ========== TRADE LINK ==========
     const input = document.getElementById('trade-link-input');
     const status = document.getElementById('trade-link-status');
 
-    // Load saved value
     const saved = localStorage.getItem('steam_trade_link');
     if (saved) input.value = saved;
 
     document.getElementById('save-trade-link').addEventListener('click', () => {
-      const val = input.value.trim();
-      const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d+&token=[A-Za-z0-9_-]+$/;
+        const val = input.value.trim();
+        const pattern = /^https:\/\/steamcommunity\.com\/tradeoffer\/new\/\?partner=\d+&token=[A-Za-z0-9_-]+$/;
 
-      if (pattern.test(val)) {
-        localStorage.setItem('steam_trade_link', val);
-        input.style.borderColor = 'rgba(255,255,255,0.2)';
-        status.textContent = "Сохранено!";
-      } else {
-        input.style.borderColor = 'red';
-        status.style.color = '#ff6b6b';
-        status.textContent = "Ошибка: Неверная ссылка";
-      }
-  });
-  </script>
+        if (pattern.test(val)) {
+            localStorage.setItem('steam_trade_link', val);
+            input.style.borderColor = 'rgba(0,212,255,0.5)';
+            status.style.color = '#00d4ff';
+            status.textContent = currentLang === 'ru' ? "Сохранено!" : "Saved!";
+        } else {
+            input.style.borderColor = 'red';
+            status.style.color = '#ff6b6b';
+            status.textContent = currentLang === 'ru' ? "Ошибка: Неверная ссылка" : "Error: Invalid link";
+        }
+    });
+
+    // ========== ЯЗЫК / ВАЛЮТА ==========
+    const rates = { USD: 1, RUB: 83.13, EUR: 0.864 };
+    let currentCurrency = localStorage.getItem('currency') || 'USD';
+    let currentLang = localStorage.getItem('language') || 'ru';
+
+    function switchLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('language', lang);
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-ru]').forEach(el => {
+            const attr = lang === 'ru' ? 'ru' : 'en';
+            if (el.hasAttribute(`data-${attr}`)) el.textContent = el.getAttribute(`data-${attr}`);
+        });
+    }
+
+    function initPage() {
+        const curSelect = document.getElementById('currency');
+        const langSelect = document.getElementById('language');
+        if (curSelect) curSelect.value = currentCurrency;
+        if (langSelect) langSelect.value = currentLang;
+        switchLanguage(currentLang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initPage();
+        document.getElementById('currency')?.addEventListener('change', e => {
+            currentCurrency = e.target.value;
+            localStorage.setItem('currency', currentCurrency);
+        });
+        document.getElementById('language')?.addEventListener('change', e => {
+            switchLanguage(e.target.value);
+        });
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
