@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Market - Покупка успешна</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="buy.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-container">
+        <a href="index.html" class="logo-link"><div class="logo-text">Aura Market</div></a>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
+        <label for="menu-toggle" class="hamburger-trigger">
+            <i class="fas fa-bars"></i>
+        </label>
+
+        <div class="mobile-nav">
+            <a href="Counter-Strike.html"><i class="fas fa-crosshairs"></i> CS 2</a>
+            <a href="Dota.html"><i class="fas fa-crown"></i> Dota 2</a>
+            <a href="SMI.html"><i class="fas fa-newspaper"></i> Новости</a>
+            <a href="profil.html"><i class="fas fa-user"></i> Перейти в профиль</a>
+            <hr>
+            <div class="select-row">
+                <select id="currency">
+                    <option value="USD">USD $</option>
+                    <option value="RUB">RUB ₽</option>
+                    <option value="EUR">EUR €</option>
+                </select>
+                <select id="language">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="success-card">
+        <i class="fas fa-check-circle success-icon"></i>
+
+        <h2 class="success-title" data-ru="Покупка успешна!" data-en="Purchase Successful!">Покупка успешна!</h2>
+
+        <p class="subtitle-text">
+            <span data-ru="Скин успешно" data-en="Your skin has been">Скин успешно</span>
+            <span class="highlight-text" data-ru="приобретён" data-en="purchased">приобретён</span>.<br>
+            <span data-ru="Сейчас он уже летит в ваш инвентарь Steam." data-en="It's on its way to your Steam inventory.">Сейчас он уже летит в ваш инвентарь Steam.</span>
+        </p>
+
+        <div class="button-group">
+            <a href="index.html" class="btn-primary-success">
+                <i class="fas fa-shopping-bag" style="margin-right:10px;"></i>
+                <span data-ru="Купить ещё" data-en="Buy more">Купить ещё</span>
+            </a>
+            <a href="profil.html" class="btn-secondary-success">
+                <i class="fas fa-user" style="margin-right:10px;"></i>
+                <span data-ru="Мой профиль" data-en="My Profile">Мой профиль</span>
+            </a>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    // Конфетти
+    setTimeout(() => {
+        confetti({
+            particleCount: 120,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#00d4ff', '#4a9eff', '#ffffff', '#66bb6a', '#a3d5ff']
+        });
+    }, 400);
+
+    setTimeout(() => {
+        confetti({
+            particleCount: 80,
+            spread: 100,
+            origin: { y: 0.7 }
+        });
+    }, 1200);
+
+    // ========== ЯЗЫК / ВАЛЮТА ==========
+    let currentCurrency = localStorage.getItem('currency') || 'USD';
+    let currentLang = localStorage.getItem('language') || 'ru';
+
+    function switchLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('language', lang);
+        document.documentElement.lang = lang;
+        document.querySelectorAll('[data-ru]').forEach(el => {
+            const attr = lang === 'ru' ? 'ru' : 'en';
+            if (el.hasAttribute(`data-${attr}`)) el.textContent = el.getAttribute(`data-${attr}`);
+        });
+    }
+
+    function initPage() {
+        const curSelect = document.getElementById('currency');
+        const langSelect = document.getElementById('language');
+        if (curSelect) curSelect.value = currentCurrency;
+        if (langSelect) langSelect.value = currentLang;
+        switchLanguage(currentLang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initPage();
+        document.getElementById('currency')?.addEventListener('change', e => {
+            currentCurrency = e.target.value;
+            localStorage.setItem('currency', currentCurrency);
+        });
+        document.getElementById('language')?.addEventListener('change', e => {
+            switchLanguage(e.target.value);
+        });
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

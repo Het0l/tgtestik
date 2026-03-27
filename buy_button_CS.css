@@ -1,0 +1,348 @@
+/* ========== MAIN STYLESHEET FOR PURCHASE PAGE (separated from logic) ========== */
+/* ---------- GLOBAL & BASE ---------- */
+body {
+    background-color: #1a1a2e;
+    color: white;
+    min-height: 100vh;
+    padding-bottom: 60px;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}
+
+/* ---------- HEADER / STICKY NAV ---------- */
+.site-header {
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    height: 50px;
+    box-sizing: border-box;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    height: 100%;
+}
+
+.logo-text {
+    font-size: 2.3rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00d4ff, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* hamburger (mobile) */
+.hamburger-trigger {
+    font-size: 1.9rem;
+    color: white;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+    margin-left: 15px;
+    display: flex !important;
+    align-items: center;
+    margin: 0;
+    line-height: 1;
+    height: 100%;
+}
+
+.hamburger-trigger:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.menu-toggle-checkbox {
+    display: none;
+}
+
+.mobile-nav {
+    position: absolute;
+    top: 100%;
+    right: 15px;
+    background: rgba(25, 28, 55, 0.98);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 12px;
+    width: 260px;
+    padding: 15px 0;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    transition: all 0.35s ease;
+    z-index: 1100;
+}
+
+.menu-toggle-checkbox:checked ~ .mobile-nav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mobile-nav a {
+    display: block;
+    padding: 14px 22px;
+    color: #e0e0ff;
+    text-decoration: none;
+    font-size: 1.08rem;
+}
+
+.mobile-nav a:hover {
+    background: rgba(0,212,255,0.15);
+    color: white;
+}
+
+.mobile-nav hr {
+    border-color: rgba(255,255,255,0.12);
+    margin: 10px 0;
+}
+
+.select-row {
+    padding: 10px 22px;
+    display: flex;
+    gap: 12px;
+}
+
+.select-row select {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 1rem;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.buy-wrapper {
+    max-width: 480px;
+    margin: 40px auto 0;
+    padding: 0 15px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 28px;
+}
+
+.method-card {
+    background: #0f3460;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.method-label {
+    font-size: 0.85rem;
+    color: #aac8e4;
+    margin-bottom: 14px;
+    font-weight: 500;
+}
+
+.method-choice-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.method-option {
+    flex: 1;
+    min-width: 140px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    color: #e0e0ff;
+}
+
+.method-option:hover {
+    background: rgba(0,212,255,0.1);
+    border-color: rgba(0,212,255,0.3);
+}
+
+.method-radio {
+    accent-color: #00d4ff;
+    width: 16px;
+    height: 16px;
+}
+
+.input-card {
+    background: #0f3460;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.trade-input-field {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    color: white;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.trade-input-field:focus {
+    border-color: rgba(0,212,255,0.5);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
+}
+
+.trade-input-field::placeholder {
+    color: rgba(255,255,255,0.3);
+}
+
+.saved-link-display {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    color: #e0e0ff;
+    word-break: break-all;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.small-hint {
+    font-size: 0.82rem;
+    color: #aac8e4;
+    margin: 8px 0 0;
+}
+
+.small-hint a {
+    color: #00d4ff;
+    text-decoration: none;
+}
+
+.small-hint a:hover {
+    text-decoration: underline;
+}
+
+.confirm-button {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: #00d4ff;
+    color: #000;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    margin-bottom: 12px;
+}
+
+.confirm-button:hover {
+    background: #00b8d9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0,212,255,0.3);
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: rgba(255,107,107,0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    display: none;
+    text-align: left;
+}
+
+.instruction-card {
+    background: #0f3460;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.instruction-title {
+    margin: 0 0 12px;
+    font-weight: 600;
+    color: #00d4ff;
+}
+
+.instruction-list {
+    padding-left: 20px;
+    margin: 0 0 14px;
+    color: #c0c8e0;
+}
+
+.instruction-list li {
+    margin-bottom: 6px;
+}
+
+.instruction-link {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.instruction-link:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.disabled-option {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .buy-wrapper {
+        margin: 30px auto 0;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+    
+    .method-option {
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+}

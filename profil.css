@@ -1,0 +1,308 @@
+/* ========== MAIN STYLESHEET FOR PROFILE PAGE (separated from logic) ========== */
+/* ---------- GLOBAL & BASE ---------- */
+body {
+    background-color: #1a1a2e;
+    color: white;
+    min-height: 100vh;
+    padding-bottom: 60px;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}
+
+/* ---------- HEADER / STICKY NAV ---------- */
+.site-header {
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    height: 50px;
+    box-sizing: border-box;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    height: 100%;
+}
+
+.logo-text {
+    font-size: 2.3rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00d4ff, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* hamburger (mobile) */
+.hamburger-trigger {
+    font-size: 1.9rem;
+    color: white;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+    margin-left: 15px;
+    display: flex !important;
+    align-items: center;
+    margin: 0;
+    line-height: 1;
+    height: 100%;
+}
+
+.hamburger-trigger:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.menu-toggle-checkbox {
+    display: none;
+}
+
+.mobile-nav {
+    position: absolute;
+    top: 100%;
+    right: 15px;
+    background: rgba(25, 28, 55, 0.98);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 12px;
+    width: 260px;
+    padding: 15px 0;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px);
+    transition: all 0.35s ease;
+    z-index: 1100;
+}
+
+.menu-toggle-checkbox:checked ~ .mobile-nav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mobile-nav a {
+    display: block;
+    padding: 14px 22px;
+    color: #e0e0ff;
+    text-decoration: none;
+    font-size: 1.08rem;
+}
+
+.mobile-nav a:hover {
+    background: rgba(0,212,255,0.15);
+    color: white;
+}
+
+.mobile-nav hr {
+    border-color: rgba(255,255,255,0.12);
+    margin: 10px 0;
+}
+
+.select-row {
+    padding: 10px 22px;
+    display: flex;
+    gap: 12px;
+}
+
+.select-row select {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 1rem;
+}
+
+/* ---------- PROFILE SECTION ---------- */
+.profile-wrapper {
+    max-width: 480px;
+    margin: 40px auto 0;
+    padding: 0 15px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.section-title span {
+    color: #00d4ff;
+}
+
+.avatar-card {
+    background: #0f3460;
+    border-radius: 16px;
+    padding: 30px 20px;
+    margin-bottom: 20px;
+}
+
+.profile-photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(0,212,255,0.5);
+    box-shadow: 0 4px 20px rgba(0,212,255,0.2);
+}
+
+.photo-placeholder {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin: 0 auto;
+    border: 1px dashed rgba(0,212,255,0.3);
+}
+
+.display-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 16px 0 0;
+    color: white;
+}
+
+.info-card {
+    background: #0f3460;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: #aac8e4;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #00d4ff;
+}
+
+.trade-card {
+    background: #0f3460;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.trade-card .info-label {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.trade-input-field {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    color: white;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.trade-input-field:focus {
+    border-color: rgba(0,212,255,0.5);
+}
+
+.trade-input-field::placeholder {
+    color: rgba(255,255,255,0.3);
+}
+
+.save-trade-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 11px;
+    border-radius: 8px;
+    border: none;
+    background: #00d4ff;
+    color: #000;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.save-trade-btn:hover {
+    background: #00b8d9;
+}
+
+.trade-status {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    min-height: 18px;
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-weight: bold;
+    margin: 20px 0;
+    background: rgba(255,107,107,0.1);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .profile-wrapper {
+        margin: 30px auto 0;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .info-card {
+        gap: 30px;
+    }
+    
+    .display-name {
+        font-size: 1.2rem;
+    }
+}
