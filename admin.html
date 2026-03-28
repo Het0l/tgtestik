@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Market | Admin Panel</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ACCESS DENIED SCREEN -->
+<div id="access-denied">
+  <div class="denied-icon"><i class="fas fa-shield-alt"></i></div>
+  <div class="denied-title">Доступ запрещён</div>
+  <div class="denied-sub">Эта панель доступна только авторизованным администраторам Aura Market.</div>
+  <div class="denied-id" id="denied-id-info">Ваш Telegram ID: —</div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-name">Aura Market</span>
+      <span class="logo-badge">ADMIN</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Главная</div>
+      <div class="nav-item active" data-page="dashboard"><i class="fas fa-chart-pie"></i> Дашборд</div>
+
+      <div class="nav-section-title">Управление</div>
+      <div class="nav-item" data-page="products"><i class="fas fa-box-open"></i> Товары</div>
+      <div class="nav-item" data-page="users"><i class="fas fa-users"></i> Пользователи</div>
+
+      <div class="nav-section-title">Настройки</div>
+      <div class="nav-item" data-page="settings"><i class="fas fa-cog"></i> Настройки</div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="admin-avatar">A</div>
+      <div class="user-info">
+        <div class="user-name" id="admin-name">Admin</div>
+        <div class="user-role">ADMINISTRATOR</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        <div class="topbar-title" id="topbar-title">Дашборд</div>
+      </div>
+      <div class="topbar-actions">
+        <span style="font-size:12px;color:var(--muted);" id="topbar-time"></span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== DASHBOARD PAGE ===== -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card violet">
+            <div class="stat-icon"><i class="fas fa-box-open"></i></div>
+            <div class="stat-val" id="stat-products">0</div>
+            <div class="stat-label">Товаров в магазине</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-val" id="stat-users">0</div>
+            <div class="stat-label">Пользователей</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon"><i class="fab fa-steam"></i></div>
+            <div class="stat-val" id="stat-steam">0</div>
+            <div class="stat-label">Steam трейд-ссылок</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="stat-val" id="stat-revenue">$0</div>
+            <div class="stat-label">Оборот (демо)</div>
+          </div>
+        </div>
+
+        <div class="section-hdr">
+          <h2><i class="fas fa-clock" style="color:var(--accent);margin-right:8px;"></i>Последние пользователи</h2>
+          <span>Топ 5 новых</span>
+        </div>
+        <div class="table-wrap" style="margin-bottom:24px;">
+          <table>
+            <thead><tr><th>Пользователь</th><th>ID</th><th>Steam</th><th>Дата</th></tr></thead>
+            <tbody id="recent-users-body">
+              <tr><td colspan="4"><div class="empty-state" style="padding:24px;"><i class="fas fa-user-clock" style="font-size:28px;"></i><p>Нет пользователей</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-hdr">
+          <h2><i class="fas fa-fire" style="color:var(--accent2);margin-right:8px;"></i>Популярные товары</h2>
+          <span>Из магазина</span>
+        </div>
+        <div class="products-grid" id="dash-products-grid">
+          <div class="empty-state"><i class="fas fa-box"></i><p>Нет товаров</p></div>
+        </div>
+      </div>
+
+      <!-- ===== PRODUCTS PAGE ===== -->
+      <div class="page" id="page-products">
+        <div class="tabs">
+          <div class="tab active" data-tab="list">Список товаров</div>
+          <div class="tab" data-tab="add">Добавить товар</div>
+        </div>
+
+        <!-- LIST TAB -->
+        <div id="tab-list">
+          <div class="section-hdr">
+            <h2>Все товары <span style="font-size:13px;color:var(--muted);" id="prod-count-label"></span></h2>
+            <button class="btn-primary" onclick="switchTab('add')"><i class="fas fa-plus"></i> Добавить</button>
+          </div>
+          <div class="products-grid" id="admin-products-grid"></div>
+        </div>
+
+        <!-- ADD TAB -->
+        <div id="tab-add" style="display:none;">
+          <div class="section-hdr">
+            <h2 id="prod-form-title">Новый товар</h2>
+          </div>
+          <div class="table-wrap" style="padding:24px;">
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Название товара</label>
+                <input class="form-input" id="prod-name" placeholder="Prime Counter-Strike">
+              </div>
+              <div class="form-field">
+                <label>Цена (USD)</label>
+                <input class="form-input" id="prod-price" type="number" placeholder="9.99" min="0" step="0.01">
+              </div>
+              <div class="form-field">
+                <label>Игра</label>
+                <select class="form-select" id="prod-game">
+                  <option value="Counter-Strike 2">Counter-Strike 2</option>
+                  <option value="Dota 2">Dota 2</option>
+                  <option value="Team Fortress 2">Team Fortress 2</option>
+                  <option value="Rust">Rust</option>
+                  <option value="Other">Другое</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Категория</label>
+                <input class="form-input" id="prod-category" placeholder="Скин, Ключ, Кейс...">
+              </div>
+              <div class="form-field full">
+                <label>Описание</label>
+                <textarea class="form-textarea" id="prod-desc" placeholder="Краткое описание товара..."></textarea>
+              </div>
+              <div class="form-field full">
+                <label>Иконка</label>
+                <div class="icon-picker" id="icon-picker">
+                  <div class="icon-opt selected" data-icon="fa-fist-raised"><i class="fas fa-fist-raised"></i></div>
+                  <div class="icon-opt" data-icon="fa-crown"><i class="fas fa-crown"></i></div>
+                  <div class="icon-opt" data-icon="fa-gem"><i class="fas fa-gem"></i></div>
+                  <div class="icon-opt" data-icon="fa-shield-alt"><i class="fas fa-shield-alt"></i></div>
+                  <div class="icon-opt" data-icon="fa-sword"><i class="fas fa-sword"></i></div>
+                  <div class="icon-opt" data-icon="fa-fire"><i class="fas fa-fire"></i></div>
+                  <div class="icon-opt" data-icon="fa-star"><i class="fas fa-star"></i></div>
+                  <div class="icon-opt" data-icon="fa-bolt"><i class="fas fa-bolt"></i></div>
+                  <div class="icon-opt" data-icon="fa-crosshairs"><i class="fas fa-crosshairs"></i></div>
+                  <div class="icon-opt" data-icon="fa-key"><i class="fas fa-key"></i></div>
+                  <div class="icon-opt" data-icon="fa-box"><i class="fas fa-box"></i></div>
+                  <div class="icon-opt" data-icon="fa-tags"><i class="fas fa-tags"></i></div>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label>Цвет иконки</label>
+                <div class="color-picker-row" id="color-picker">
+                  <div class="color-swatch selected" data-color="#FFD700" style="background:#FFD700;"></div>
+                  <div class="color-swatch" data-color="#6c63ff" style="background:#6c63ff;"></div>
+                  <div class="color-swatch" data-color="#ff6b6b" style="background:#ff6b6b;"></div>
+                  <div class="color-swatch" data-color="#00d4aa" style="background:#00d4aa;"></div>
+                  <div class="color-swatch" data-color="#ff9f43" style="background:#ff9f43;"></div>
+                  <div class="color-swatch" data-color="#ee5a24" style="background:#ee5a24;"></div>
+                  <div class="color-swatch" data-color="#0984e3" style="background:#0984e3;"></div>
+                  <div class="color-swatch" data-color="#a29bfe" style="background:#a29bfe;"></div>
+                  <div class="color-swatch custom" data-color="custom"><i class="fas fa-palette"></i></div>
+                  <input type="color" id="custom-color" style="display:none;" value="#ffffff">
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Статус</label>
+                <select class="form-select" id="prod-status">
+                  <option value="active">Активен</option>
+                  <option value="hidden">Скрыт</option>
+                  <option value="sold">Продан</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Количество</label>
+                <input class="form-input" id="prod-qty" type="number" placeholder="1" min="1" value="1">
+              </div>
+            </div>
+            <div style="margin-top:20px;display:flex;gap:10px;">
+              <button class="btn-primary" id="save-prod-btn" onclick="saveProduct()"><i class="fas fa-save"></i> Сохранить товар</button>
+              <button class="btn-secondary" onclick="resetProductForm()"><i class="fas fa-undo"></i> Сбросить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== USERS PAGE ===== -->
+      <div class="page" id="page-users">
+        <div class="section-hdr">
+          <h2>Пользователи бота</h2>
+          <span id="users-count-label">0 чел.</span>
+        </div>
+        <div class="table-wrap">
+          <div class="table-search">
+            <i class="fas fa-search" style="color:var(--muted);"></i>
+            <input id="user-search" placeholder="Поиск по имени, ID или username...">
+            <button class="btn-secondary" style="padding:7px 14px;font-size:12px;" onclick="exportUsers()"><i class="fas fa-download"></i> Экспорт</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Пользователь</th>
+                  <th>Telegram ID</th>
+                  <th>Username</th>
+                  <th>Steam Trade Link</th>
+                  <th>Статус</th>
+                  <th>Зашёл</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SETTINGS PAGE ===== -->
+      <div class="page" id="page-settings">
+        <div class="section-hdr"><h2>Настройки Admin Panel</h2></div>
+        <div class="table-wrap" style="padding:24px;margin-bottom:20px;">
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Admin Telegram ID</label>
+              <input class="form-input" id="setting-admin-id" placeholder="123456789" readonly style="opacity:.6;cursor:not-allowed;">
+            </div>
+            <div class="form-field">
+              <label>Название магазина</label>
+              <input class="form-input" id="setting-shop-name" placeholder="Aura Market">
+            </div>
+            <div class="form-field full">
+              <label>Добавить тестового пользователя (демо)</label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <input class="form-input" id="demo-user-name" placeholder="Имя" style="flex:1;min-width:120px;">
+                <input class="form-input" id="demo-user-id" placeholder="Telegram ID" type="number" style="flex:1;min-width:120px;">
+                <input class="form-input" id="demo-user-steam" placeholder="Steam Trade Link" style="flex:2;min-width:200px;">
+                <button class="btn-primary" onclick="addDemoUser()"><i class="fas fa-plus"></i> Добавить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap" style="padding:24px;">
+          <h3 style="font-family:var(--font-head);margin-bottom:16px;font-size:15px;">Данные & Хранилище</h3>
+          <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">Все данные хранятся в localStorage браузера. В продакшне подключите API-бэкенд.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-secondary" onclick="clearAllData()"><i class="fas fa-trash" style="color:var(--accent2);"></i> Очистить все данные</button>
+            <button class="btn-secondary" onclick="exportAllData()"><i class="fas fa-file-export" style="color:var(--accent3);"></i> Экспорт JSON</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end app -->
+
+<!-- MODAL: User Steam Link -->
+<div class="modal-overlay" id="steam-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fab fa-steam" style="margin-right:8px;color:var(--accent);"></i>Steam Trade Link</h3>
+      <button class="modal-close" onclick="closeModal('steam-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div id="modal-user-info" style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:10px;"></div>
+      <div class="form-field">
+        <label>Steam Trade Link</label>
+        <input class="form-input" id="modal-steam-input" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=...">
+      </div>
+      <p style="font-size:12px;color:var(--muted);">Ссылка для обмена предметами Steam. Можно найти в настройках Steam → Приватность → Ссылка для обмена.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('steam-modal')">Отмена</button>
+      <button class="btn-primary" onclick="saveSteamLink()"><i class="fas fa-save"></i> Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ============================================================
+//  КОНФИГУРАЦИЯ: УКАЖИТЕ ВАШ TELEGRAM ID ЗДЕСЬ
+// ============================================================
+const ADMIN_IDS = [123456789]; // ← замените на свой Telegram ID
+
+// ============================================================
+//  ХРАНИЛИЩЕ
+// ============================================================
+function getData(key, def = []) {
+  try { return JSON.parse(localStorage.getItem('aura_admin_' + key) || JSON.stringify(def)); }
+  catch { return def; }
+}
+function setData(key, val) {
+  localStorage.setItem('aura_admin_' + key, JSON.stringify(val));
+}
+
+let products = getData('products', []);
+let users    = getData('users', []);
+let editingProdId = null;
+let selectedIcon  = 'fa-fist-raised';
+let selectedColor = '#FFD700';
+let editingUserId = null;
+
+// ============================================================
+//  TELEGRAM INIT
+// ============================================================
+let currentUser = null;
+
+function initTelegram() {
+  const tg = window.Telegram?.WebApp;
+
+  if (tg && tg.initDataUnsafe?.user) {
+    const u = tg.initDataUnsafe.user;
+    currentUser = {
+      id: u.id,
+      first_name: u.first_name || '',
+      last_name: u.last_name || '',
+      username: u.username || '',
+    };
+    tg.expand();
+    tg.enableClosingConfirmation();
+    document.documentElement.style.setProperty('--bg', '#0a0b0f');
+  } else {
+    // В браузере / без TG → для разработки показываем интерфейс с демо-режимом
+    currentUser = { id: ADMIN_IDS[0], first_name: 'Dev', last_name: 'Admin', username: 'dev_admin' };
+  }
+
+  registerUser(currentUser);
+  checkAccess();
+}
+
+function registerUser(u) {
+  const existing = users.find(x => x.id === u.id);
+  if (!existing) {
+    users.push({
+      id: u.id,
+      first_name: u.first_name,
+      last_name: u.last_name,
+      username: u.username,
+      steam_link: '',
+      status: 'active',
+      joined: new Date().toISOString(),
+    });
+    setData('users', users);
+  }
+}
+
+function checkAccess() {
+  const isAdmin = ADMIN_IDS.includes(currentUser.id);
+  const denied  = document.getElementById('access-denied');
+  const app     = document.getElementById('app');
+
+  if (!isAdmin) {
+    denied.classList.add('show');
+    document.getElementById('denied-id-info').textContent = 'Ваш Telegram ID: ' + currentUser.id;
+    return;
+  }
+
+  app.style.display = 'flex';
+  initAdminUI();
+}
+
+// ============================================================
+//  INIT UI
+// ============================================================
+function initAdminUI() {
+  const u = currentUser;
+  const name = (u.first_name + ' ' + (u.last_name || '')).trim();
+  document.getElementById('admin-name').textContent = name || 'Admin';
+  document.getElementById('admin-avatar').textContent = (name[0] || 'A').toUpperCase();
+  document.getElementById('setting-admin-id').value = u.id;
+
+  renderDashboard();
+  renderProducts();
+  renderUsers();
+  startClock();
+  bindEvents();
+}
+
+// ============================================================
+//  DASHBOARD
+// ============================================================
+function renderDashboard() {
+  document.getElementById('stat-products').textContent = products.length;
+  document.getElementById('stat-users').textContent    = users.length;
+  const withSteam = users.filter(u => u.steam_link).length;
+  document.getElementById('stat-steam').textContent    = withSteam;
+  const rev = products.reduce((s, p) => s + parseFloat(p.price || 0), 0);
+  document.getElementById('stat-revenue').textContent  = '$' + rev.toFixed(2);
+
+  // Recent users
+  const tbody = document.getElementById('recent-users-body');
+  const recent = [...users].sort((a,b) => new Date(b.joined)-new Date(a.joined)).slice(0,5);
+  if (!recent.length) {
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state" style="padding:24px;"><i class="fas fa-user-clock" style="font-size:28px;"></i><p>Нет пользователей</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = recent.map(u => `
+      <tr>
+        <td><div class="user-cell">
+          <div class="user-mini-av">${(u.first_name[0]||'?').toUpperCase()}</div>
+          ${u.first_name} ${u.last_name||''}
+        </div></td>
+        <td style="font-family:monospace;font-size:12px;color:var(--muted);">${u.id}</td>
+        <td>${u.steam_link ? '<span class="badge badge-active"><i class="fas fa-check"></i> Есть</span>' : '<span class="badge badge-banned">Нет</span>'}</td>
+        <td style="font-size:12px;color:var(--muted);">${formatDate(u.joined)}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Dash products
+  const grid = document.getElementById('dash-products-grid');
+  if (!products.length) {
+    grid.innerHTML = `<div class="empty-state"><i class="fas fa-box"></i><p>Нет товаров</p></div>`;
+  } else {
+    grid.innerHTML = products.slice(0,4).map(p => productCard(p, false)).join('');
+  }
+}
+
+// ============================================================
+//  PRODUCTS
+// ============================================================
+function productCard(p, withActions = true) {
+  return `
+    <div class="product-item">
+      <div class="prod-icon-area" style="color:${p.color||'#FFD700'}">
+        <i class="fas ${p.icon||'fa-box'}"></i>
+      </div>
+      <div class="prod-name">${escHtml(p.name)}</div>
+      <div class="prod-game">${escHtml(p.game||'')} ${p.category?'· '+escHtml(p.category):''}</div>
+      <div class="prod-price">$${parseFloat(p.price||0).toFixed(2)}</div>
+      ${withActions ? `
+      <div class="prod-actions">
+        <button class="btn-sm btn-edit" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i> Изм.</button>
+        <button class="btn-sm btn-del" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
+      </div>` : ''}
+      <div class="prod-badge">
+        <span class="badge ${p.status==='active'?'badge-active':p.status==='sold'?'badge-banned':'badge-new'}">
+          ${p.status==='active'?'Активен':p.status==='sold'?'Продан':'Скрыт'}
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function renderProducts() {
+  const grid = document.getElementById('admin-products-grid');
+  document.getElementById('prod-count-label').textContent = '(' + products.length + ')';
+  if (!products.length) {
+    grid.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>Нет товаров. Добавьте первый!</p></div>`;
+  } else {
+    grid.innerHTML = products.map(p => productCard(p, true)).join('');
+  }
+}
+
+function saveProduct() {
+  const name  = document.getElementById('prod-name').value.trim();
+  const price = document.getElementById('prod-price').value;
+  const game  = document.getElementById('prod-game').value;
+  const cat   = document.getElementById('prod-category').value.trim();
+  const desc  = document.getElementById('prod-desc').value.trim();
+  const status= document.getElementById('prod-status').value;
+  const qty   = document.getElementById('prod-qty').value;
+
+  if (!name || !price) { showToast('Заполните название и цену', 'error'); return; }
+
+  if (editingProdId) {
+    const idx = products.findIndex(p => p.id === editingProdId);
+    if (idx !== -1) {
+      products[idx] = { ...products[idx], name, price, game, category: cat, desc, status, qty, icon: selectedIcon, color: selectedColor };
+      showToast('Товар обновлён', 'success');
+    }
+    editingProdId = null;
+    document.getElementById('prod-form-title').textContent = 'Новый товар';
+    document.getElementById('save-prod-btn').innerHTML = '<i class="fas fa-save"></i> Сохранить товар';
+  } else {
+    products.push({ id: genId(), name, price, game, category: cat, desc, status, qty, icon: selectedIcon, color: selectedColor, created: new Date().toISOString() });
+    showToast('Товар добавлен!', 'success');
+  }
+
+  setData('products', products);
+  renderProducts();
+  renderDashboard();
+  resetProductForm();
+  switchTab('list');
+}
+
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  editingProdId = id;
+  document.getElementById('prod-name').value     = p.name;
+  document.getElementById('prod-price').value    = p.price;
+  document.getElementById('prod-game').value     = p.game;
+  document.getElementById('prod-category').value = p.category || '';
+  document.getElementById('prod-desc').value     = p.desc || '';
+  document.getElementById('prod-status').value   = p.status || 'active';
+  document.getElementById('prod-qty').value      = p.qty || 1;
+  selectedIcon  = p.icon  || 'fa-fist-raised';
+  selectedColor = p.color || '#FFD700';
+  document.querySelectorAll('.icon-opt').forEach(el => el.classList.toggle('selected', el.dataset.icon === selectedIcon));
+  document.querySelectorAll('.color-swatch').forEach(el => el.classList.toggle('selected', el.dataset.color === selectedColor));
+  document.getElementById('prod-form-title').textContent = 'Редактировать товар';
+  document.getElementById('save-prod-btn').innerHTML = '<i class="fas fa-save"></i> Обновить товар';
+  switchTab('add');
+  navigateTo('products');
+}
+
+function deleteProduct(id) {
+  if (!confirm('Удалить товар?')) return;
+  products = products.filter(p => p.id !== id);
+  setData('products', products);
+  renderProducts();
+  renderDashboard();
+  showToast('Товар удалён', 'info');
+}
+
+function resetProductForm() {
+  ['prod-name','prod-category','prod-desc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('prod-price').value  = '';
+  document.getElementById('prod-game').value   = 'Counter-Strike 2';
+  document.getElementById('prod-status').value = 'active';
+  document.getElementById('prod-qty').value    = '1';
+  selectedIcon = 'fa-fist-raised'; selectedColor = '#FFD700';
+  document.querySelectorAll('.icon-opt').forEach(el => el.classList.toggle('selected', el.dataset.icon === 'fa-fist-raised'));
+  document.querySelectorAll('.color-swatch').forEach(el => el.classList.toggle('selected', el.dataset.color === '#FFD700'));
+  editingProdId = null;
+  document.getElementById('prod-form-title').textContent = 'Новый товар';
+  document.getElementById('save-prod-btn').innerHTML = '<i class="fas fa-save"></i> Сохранить товар';
+}
+
+// ============================================================
+//  USERS
+// ============================================================
+function renderUsers(filter = '') {
+  const f   = filter.toLowerCase();
+  const filtered = users.filter(u =>
+    !f ||
+    (u.first_name + ' ' + (u.last_name||'')).toLowerCase().includes(f) ||
+    String(u.id).includes(f) ||
+    (u.username||'').toLowerCase().includes(f)
+  );
+  document.getElementById('users-count-label').textContent = filtered.length + ' чел.';
+  const tbody = document.getElementById('users-table-body');
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state" style="padding:30px;"><i class="fas fa-user-slash" style="font-size:32px;"></i><p>Нет пользователей</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(u => `
+    <tr>
+      <td><div class="user-cell">
+        <div class="user-mini-av">${(u.first_name[0]||'?').toUpperCase()}</div>
+        <span>${escHtml(u.first_name)} ${escHtml(u.last_name||'')}</span>
+      </div></td>
+      <td>
+        <span style="font-family:monospace;font-size:12px;">${u.id}</span>
+        <button class="copy-btn" onclick="copyText('${u.id}')"><i class="fas fa-copy"></i></button>
+      </td>
+      <td style="color:var(--muted);font-size:12px;">${u.username ? '@'+escHtml(u.username) : '—'}</td>
+      <td>
+        <div class="steam-cell">
+          <span class="steam-link-text" title="${escHtml(u.steam_link||'')}">${u.steam_link ? escHtml(u.steam_link) : '<span style="color:var(--muted)">Не указан</span>'}</span>
+          ${u.steam_link ? `<button class="copy-btn" onclick="copyText('${escAttr(u.steam_link)}')"><i class="fas fa-copy"></i></button>` : ''}
+        </div>
+      </td>
+      <td><span class="badge ${u.status==='active'?'badge-active':'badge-banned'}">${u.status==='active'?'Активен':'Заблокирован'}</span></td>
+      <td style="font-size:12px;color:var(--muted);">${formatDate(u.joined)}</td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="link-btn" onclick="openSteamModal('${u.id}')"><i class="fab fa-steam"></i> Steam</button>
+          <button class="link-btn" style="color:${u.status==='active'?'var(--accent2)':'var(--accent3)'}" onclick="toggleBan('${u.id}')">
+            ${u.status==='active'?'<i class="fas fa-ban"></i>':'<i class="fas fa-check"></i>'}
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openSteamModal(userId) {
+  const u = users.find(x => String(x.id) === String(userId));
+  if (!u) return;
+  editingUserId = userId;
+  document.getElementById('modal-user-info').innerHTML = `
+    <div class="user-mini-av" style="width:42px;height:42px;font-size:17px;">${(u.first_name[0]||'?').toUpperCase()}</div>
+    <div>
+      <div style="font-weight:700;">${escHtml(u.first_name)} ${escHtml(u.last_name||'')}</div>
+      <div style="font-size:12px;color:var(--muted);">ID: ${u.id}${u.username?' · @'+escHtml(u.username):''}</div>
+    </div>
+  `;
+  document.getElementById('modal-steam-input').value = u.steam_link || '';
+  document.getElementById('steam-modal').classList.add('open');
+}
+
+function saveSteamLink() {
+  const link = document.getElementById('modal-steam-input').value.trim();
+  const idx  = users.findIndex(u => String(u.id) === String(editingUserId));
+  if (idx === -1) return;
+  users[idx].steam_link = link;
+  setData('users', users);
+  renderUsers(document.getElementById('user-search').value);
+  renderDashboard();
+  closeModal('steam-modal');
+  showToast('Steam ссылка сохранена', 'success');
+}
+
+function toggleBan(userId) {
+  const idx = users.findIndex(u => String(u.id) === String(userId));
+  if (idx === -1) return;
+  users[idx].status = users[idx].status === 'active' ? 'banned' : 'active';
+  setData('users', users);
+  renderUsers(document.getElementById('user-search').value);
+  showToast(users[idx].status === 'active' ? 'Пользователь разблокирован' : 'Пользователь заблокирован', 'info');
+}
+
+// ============================================================
+//  SETTINGS
+// ============================================================
+function addDemoUser() {
+  const name  = document.getElementById('demo-user-name').value.trim();
+  const id    = parseInt(document.getElementById('demo-user-id').value);
+  const steam = document.getElementById('demo-user-steam').value.trim();
+  if (!name || !id) { showToast('Укажите имя и ID', 'error'); return; }
+  if (users.find(u => u.id === id)) { showToast('Пользователь с таким ID уже есть', 'error'); return; }
+  users.push({ id, first_name: name, last_name: '', username: '', steam_link: steam, status: 'active', joined: new Date().toISOString() });
+  setData('users', users);
+  renderUsers(); renderDashboard();
+  document.getElementById('demo-user-name').value = '';
+  document.getElementById('demo-user-id').value   = '';
+  document.getElementById('demo-user-steam').value= '';
+  showToast('Пользователь добавлен', 'success');
+}
+
+function clearAllData() {
+  if (!confirm('Удалить ВСЕ данные (товары и пользователей)?')) return;
+  products = []; users = [];
+  setData('products', products); setData('users', users);
+  renderProducts(); renderUsers(); renderDashboard();
+  showToast('Данные очищены', 'info');
+}
+
+function exportAllData() {
+  const data = JSON.stringify({ products, users }, null, 2);
+  downloadFile('aura_market_export.json', data, 'application/json');
+  showToast('Экспорт завершён', 'success');
+}
+
+function exportUsers() {
+  const csv = ['ID,Имя,Username,Steam Link,Статус,Дата'].concat(
+    users.map(u => `${u.id},"${u.first_name} ${u.last_name||''}","${u.username||''}","${u.steam_link||''}","${u.status}","${formatDate(u.joined)}"`)
+  ).join('\n');
+  downloadFile('aura_users.csv', csv, 'text/csv');
+  showToast('Экспорт пользователей завершён', 'success');
+}
+
+// ============================================================
+//  NAV & TABS
+// ============================================================
+function navigateTo(page) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.page === page));
+  document.querySelectorAll('.page').forEach(el => el.classList.toggle('active', el.id === 'page-'+page));
+  const titles = { dashboard: 'Дашборд', products: 'Товары', users: 'Пользователи', settings: 'Настройки' };
+  document.getElementById('topbar-title').textContent = titles[page] || '';
+  closeSidebar();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+  document.getElementById('tab-list').style.display = tab === 'list' ? 'block' : 'none';
+  document.getElementById('tab-add').style.display  = tab === 'add'  ? 'block' : 'none';
+}
+
+// ============================================================
+//  BINDINGS
+// ============================================================
+function bindEvents() {
+  // Nav
+  document.querySelectorAll('.nav-item[data-page]').forEach(el => {
+    el.addEventListener('click', () => navigateTo(el.dataset.page));
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab[data-tab]').forEach(el => {
+    el.addEventListener('click', () => switchTab(el.dataset.tab));
+  });
+
+  // Mobile sidebar
+  document.getElementById('mobile-menu-btn').addEventListener('click', openSidebar);
+  document.getElementById('sidebar-overlay').addEventListener('click', closeSidebar);
+
+  // User search
+  document.getElementById('user-search').addEventListener('input', e => renderUsers(e.target.value));
+
+  // Icon picker
+  document.querySelectorAll('.icon-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.icon-opt').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedIcon = el.dataset.icon;
+    });
+  });
+
+  // Color picker
+  document.querySelectorAll('.color-swatch:not(.custom)').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedColor = el.dataset.color;
+    });
+  });
+  document.querySelector('.color-swatch.custom').addEventListener('click', () => {
+    document.getElementById('custom-color').click();
+  });
+  document.getElementById('custom-color').addEventListener('input', e => {
+    selectedColor = e.target.value;
+    document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('selected'));
+    document.querySelector('.color-swatch.custom').classList.add('selected');
+    document.querySelector('.color-swatch.custom').style.background = selectedColor;
+  });
+}
+
+function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ============================================================
+//  UTILS
+// ============================================================
+function showToast(msg, type = 'info') {
+  const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<i class="fas ${icons[type]}"></i> ${escHtml(msg)}`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => showToast('Скопировано!', 'success')).catch(() => showToast('Не удалось скопировать', 'error'));
+}
+
+function genId() { return '_' + Math.random().toString(36).slice(2, 10); }
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' }) + ' ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+}
+
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escAttr(s) { return String(s||'').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
+
+function downloadFile(name, content, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = name;
+  a.click();
+}
+
+function startClock() {
+  const el = document.getElementById('topbar-time');
+  setInterval(() => {
+    el.textContent = new Date().toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  }, 1000);
+}
+
+// ============================================================
+//  BOOT
+// ============================================================
+document.addEventListener('DOMContentLoaded', initTelegram);
+</script>
+</body>
+</html>
