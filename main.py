@@ -17,6 +17,10 @@ def shop():
 @app.route('/popular')
 def popular():
     return render_template('popular.html')
+    
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
 # @app.route('/page1')
 # def page1():
 #     return render_template('page1.html')
